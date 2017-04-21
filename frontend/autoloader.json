@@ -1,0 +1,24 @@
+{
+	"files":[
+		{
+			"classes":["views\\request\\process\\search"],
+			"file":"views/process/search.php"
+		},
+		{
+			"classes":["views\\request\\process\\view"],
+			"file":"views/process/view.php"
+		},
+		{
+			"classes":["views\\request\\process\\edit"],
+			"file":"views/process/edit.php"
+		},
+		{
+			"classes":["views\\request\\process\\delete"],
+			"file":"views/process/delete.php"
+		},
+		{
+			"classes":["views\\request\\process\\lunch"],
+			"file":"views/process/lunch.php"
+		}
+	]
+}

@@ -1,0 +1,42 @@
+{
+	"name" : "clipone",
+	"title":"Clip One",
+	"version" : "1.0.0",
+	"author" : {
+		"name" : "Mahdi Abedi",
+		"website" : "http://www.mhdabedi.tk/"
+	},
+	"autoload":"autoloader.json",
+	"languages":{
+		"fa_IR" : "langs/fa_IR.json"
+	},
+	"assets":[
+	],
+	"views":[
+		{
+			"name":"\\themes\\clipone\\views\\request\\process\\search",
+			"parent":"\\packages\\request\\views\\process\\search",
+			"file":"html/process/search.php"
+		},
+		{
+			"name":"\\themes\\clipone\\views\\request\\process\\view",
+			"parent":"\\packages\\request\\views\\process\\view",
+			"file":"html/process/view.php"
+		},
+		{
+			"name":"\\themes\\clipone\\views\\request\\process\\edit",
+			"parent":"\\packages\\request\\views\\process\\edit",
+			"file":"html/process/edit.php"
+		},
+		{
+			"name":"\\themes\\clipone\\views\\request\\process\\delete",
+			"parent":"\\packages\\request\\views\\process\\delete",
+			"file":"html/process/delete.php"
+		},
+		{
+			"name":"\\themes\\clipone\\views\\request\\process\\lunch",
+			"parent":"\\packages\\request\\views\\process\\lunch",
+			"file":"html/process/lunch.php"
+		}
+	]
+}
