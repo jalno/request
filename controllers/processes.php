@@ -156,9 +156,6 @@ class processes extends controller{
 					'type' => 'string',
 					'optional' => true
 				],
-				'type' => [
-					'optional' => true
-				],
 				'status' => [
 					'type' => 'number',
 					'optional' => true,
@@ -184,9 +181,6 @@ class processes extends controller{
 					if(!$inputs['note']){
 						unset($inputs['note']);
 					}
-				}
-				if(!class_exists($inputs['type']) or !is_subclass_of($inputs['type'], event::class)){
-					throw new inputValidation('type');
 				}
 				foreach(['title', 'status'] as $item){
 					if(isset($inputs[$item])){

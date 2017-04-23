@@ -31,11 +31,6 @@ $this->the_header();
 							'label' => translator::trans('request.process.title')
 						]);
 						$this->createField([
-							'name' => 'type',
-							'ltr' => true,
-							'label' => translator::trans('request.process.type')
-						]);
-						$this->createField([
 							'type' => 'select',
 							'name' => 'status',
 							'label' => translator::trans('request.process.status'),
@@ -48,7 +43,7 @@ $this->the_header();
 						$this->createField([
 							'type' => 'textarea',
 							'name' => 'note',
-							'rows' => 8,
+							'rows' => 4,
 							'label' => translator::trans('request.process.note')
 						]);
 						?>
