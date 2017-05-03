@@ -20,8 +20,7 @@ class process extends dbObject{
 	private $handler;
 	protected $dbTable = "request_processes";
 	protected $primaryKey = "id";
-	protected $account;
-	private $needModify = false;
+	private $lastProcess;
 	protected $dbFields = [
         'title' => ['type' => 'text', 'required' => true],
         'user' => ['type' => 'int', 'required' => true],
@@ -46,6 +45,7 @@ class process extends dbObject{
 		if(!isset($data['create_at'])){
 			$data['create_at'] = date::time();
 		}
+		parent::$recursivelySerialize = true;
 		return $data;
 	}
 	public function setParam(string $name, $value){
@@ -108,6 +108,7 @@ class process extends dbObject{
 			}
 			$this->tmparams = [];
 		}
+		parent::$recursivelySerialize = false;
 		return $return;
 	}
 	public function getHandler(){
@@ -122,7 +123,13 @@ class process extends dbObject{
 	public function buildFrontend(view $view){
 		$this->getHandler()->buildFrontend($view);
 	}
-	public function runInBackground():baseprocess{
+	public function runInBackground(int $timeout = 0):baseprocess{
+		db::where('request', $this->id);
+		db::where('type', self::process);
+		$allbaseProcesses = db::getValue('request_base','request_base.process', null);
+		if(!is_array($allbaseProcesses)){
+			$allbaseProcesses = [];
+		}
 		$process = new baseprocess();
 		$process->name = "packages\\request\\processes\\requests@runner";
 		$process->parameters = array(
@@ -131,11 +138,40 @@ class process extends dbObject{
 		$process->save();
 		$this->addProcess($process, self::runner);
 		$process->background_run();
+		$time = time();
+		while(($timeout == 0 or time() - $time < $timeout) and $process->isRunning()){
+			db::where('request', $this->id);
+			db::where('type', self::process);
+			$newbaseProcesses = db::getValue('request_base', 'request_base.process', null);
+			if(!is_array($newbaseProcesses)){
+				$newbaseProcesses = [];
+			}
+			if($diff = array_values(array_diff($newbaseProcesses, $allbaseProcesses))){
+				$this->lastProcess = new baseprocess();
+				$this->lastProcess = $this->lastProcess->byId($diff[0]);
+				break;
+			}
+			usleep(250000);
+		}
 		return $process;
 	}
-	public function runAndWaitFor(int $timeoust = 0){
-		$process = $this->runInBackground();
-		return $process->waitFor($timeoust);
+	public function runAndWaitFor(int $timeout = 0){
+		$runner = $this->runInBackground($timeout);
+		return $runner->waitFor($timeout);
+	}
+	public function getLastProcess(){
+		if(!$this->lastProcess){
+			db::join('request_base', 'base_processes.id=request_base.process', "INNER");
+			$this->lastProcess = new baseprocess();
+			$this->lastProcess->where('request_base.request', $this->id);
+			$this->lastProcess->where('request_base.type', self::process);
+			$this->lastProcess->orderBy('base_processes.start', 'DESC');
+			$this->lastProcess = $this->lastProcess->getOne('base_processes.*');
+		}else{
+			$this->lastProcess->where("id", $this->lastProcess->id);
+			$this->lastProcess = $this->lastProcess->getOne();
+		}
+		return $this->lastProcess;
 	}
 	public function addProcess(baseprocess $process, int $type = self::process){
 		db::insert('request_base', array(
@@ -143,5 +179,15 @@ class process extends dbObject{
 			'process' => $process->id,
 			'type' => $type
 		));
+	}
+	public function __get($key){
+		if($key == 'response'){
+			if($lastProcess = $this->getLastProcess()){
+				return $lastProcess->response;
+			}else{
+				return null;
+			}
+		}
+		return parent::__get($key);
 	}
 }
