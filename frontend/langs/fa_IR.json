@@ -45,6 +45,8 @@
 		"request.process.delete.warning": "آیا از حذف درخواست به شناسه #{id}‌ اطمینان دارید؟ این عملیات بدون بازگشت است.",
 		"request.processLunch": "راه اندازی مجدد",
 		"request.process.lunch.notice": "آیا از راه اندازی مجدد درخواست #{id} اطمینان دارید؟",
-		"request.process.operator.server": "سرور"
+		"request.process.operator.server": "سرور",
+		"request.search.title": "مشاهده درخواست {title}",
+		"request.search.description": "کاربر : {user}, وضعیت : {status}"
 	}
 }

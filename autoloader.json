@@ -89,6 +89,10 @@
 		{
 			"classes":["views\\process\\lunch"],
 			"file":"views/process/lunch.php"
+		},
+		{
+			"classes":["listeners\\search"],
+			"file":"listeners/search.php"
 		}
 	]
 }
