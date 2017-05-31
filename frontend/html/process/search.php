@@ -8,6 +8,7 @@ $this->the_header();
 ?>
 <div class="row">
 	<div class="col-xs-12">
+	<?php if(!empty($this->getProcessLists())){ ?>
 		<div class="panel panel-default">
 			<div class="panel-heading">
 				<i class="fa fa-exclamation-circle"></i> <?php echo translator::trans('requests.processList'); ?>
@@ -157,6 +158,7 @@ $this->the_header();
 				<button type="button" class="btn btn-default" data-dismiss="modal" aria-hidden="true"><?php echo translator::trans('cancel'); ?></button>
 			</div>
 		</div>
+	<?php } ?>
 	</div>
 </div>
 <?php

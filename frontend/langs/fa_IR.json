@@ -47,6 +47,7 @@
 		"request.process.lunch.notice": "آیا از راه اندازی مجدد درخواست #{id} اطمینان دارید؟",
 		"request.process.operator.server": "سرور",
 		"request.search.title": "مشاهده درخواست {title}",
-		"request.search.description": "کاربر : {user}, وضعیت : {status}"
+		"request.search.description": "کاربر : {user}, وضعیت : {status}",
+		"error.request.process.notfound": "هیج درخواست و فعالیتی برای شما یافت نشد ، چنانچه احساس میکنید خطایی وجود داد به ما اطلاع بدهید."
 	}
 }

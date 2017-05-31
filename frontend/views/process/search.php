@@ -1,5 +1,7 @@
 <?php
 namespace themes\clipone\views\request\process;
+use \packages\base\packages;
+use \packages\base\view\error;
 use \packages\base\translator;
 use \packages\base\frontend\theme;
 use \packages\userpanel;
@@ -11,7 +13,6 @@ use \themes\clipone\navigation;
 use \themes\clipone\views\listTrait;
 use \themes\clipone\views\formTrait;
 use \themes\clipone\navigation\menuItem;
-
 class search extends requestList{
 	use viewTrait, listTrait, formTrait;
 	protected $multiuser = false;
@@ -24,6 +25,24 @@ class search extends requestList{
 		$this->check_multiuser();
 		$this->setButtons();
 		navigation::active("requests");
+		if(empty($this->getProcessLists())){
+			$this->addNotFoundError();
+		}
+	}
+	private function addNotFoundError(){
+		$error = new error();
+		$error->setType(error::NOTICE);
+		$error->setCode('request.process.notfound');
+		if(packages::package('ticketing')){
+			$error->setData([
+				[
+					'type' => 'btn-teal',
+					'txt' => translator::trans('ticketing.add'),
+					'link' => userpanel\url('ticketing/new')
+				]
+			], 'btns');
+		}
+		$this->addError($error);
 	}
 	private function addAssets(){
 		$this->addJSFile(theme::url('assets/js/pages/process.js'));
