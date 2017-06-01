@@ -30,6 +30,7 @@
 		"request.process.status.running": "درحال انجام",
 		"request.process.status.failed": "خطا",
 		"request.process.status.cancel": "انصراف",
+		"request.process.status.inprogress": "در حال پیگیری",
 		"usertype.permissions.request_search": "درخواست ها",
 		"usertype.permissions.request_view": "مشاهده درخواست",
 		"usertype.permissions.request_add": "افزودن درخواست",

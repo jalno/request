@@ -93,6 +93,30 @@
 		{
 			"classes":["listeners\\search"],
 			"file":"listeners/search.php"
+		},
+		{
+			"classes":["listeners\\notifications"],
+			"file":"listeners/notifications.php"
+		},
+		{
+			"classes":["events\\processes\\inprogress"],
+			"file":"libraries/events/processes/inprogress.php"
+		},
+		{
+			"classes":["events\\processes\\complete"],
+			"file":"libraries/events/processes/complete.php"
+		},
+		{
+			"classes":["events\\processes\\complete\\done"],
+			"file":"libraries/events/processes/done.php"
+		},
+		{
+			"classes":["events\\processes\\complete\\failed"],
+			"file":"libraries/events/processes/failed.php"
+		},
+		{
+			"classes":["events\\processes\\delete"],
+			"file":"libraries/events/processes/delete.php"
 		}
 	]
 }
