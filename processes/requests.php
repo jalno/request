@@ -4,6 +4,7 @@ use \packages\base\process;
 use \packages\base\log;
 use \packages\base\NotFound;
 use \packages\base\date;
+use \packages\request\events;
 use \packages\request\process as request;
 class requests extends process{
 	public function runner($data){
@@ -40,6 +41,10 @@ class requests extends process{
 				case(process::stopped):
 					$request->status = request::done;
 					$request->done_at = date::time();
+					$log->debug("send complete done notification trigger");
+					$event = new events\processes\complete\done($request);
+					$event->trigger();
+					$log->reply("Sent");
 					break;
 				case(process::error):
 					$request->status = request::failed;

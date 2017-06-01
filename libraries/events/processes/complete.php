@@ -1,10 +1,10 @@
 <?php
-namespace packages\request\events\processs;
+namespace packages\request\events\processes;
 use \packages\base\event;
 use \packages\userpanel\user;
 use \packages\notifications\notifiable;
 use \packages\request\process;
-class add extends event implements notifiable{
+class complete extends event implements notifiable{
 	private $process;
 	public function __construct(process $process){
 		$this->process = $process;
@@ -13,7 +13,7 @@ class add extends event implements notifiable{
 		return $this->process;
 	}
 	public static function getName():string{
-		return 'request_process_add';
+		return 'request_process_complete';
 	}
 	public static function getParameters():array{
 		return [process::class];

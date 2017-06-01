@@ -24,6 +24,8 @@
 		"sms.template.variable.process->done_at":"زمان انجام",
 		"sms.template.variable.process->type":"نوع",
 		"sms.template.variable.process->parameters":"پارامتر ها",
-		"sms.template.variable.process->status":"وضعیت"
+		"sms.template.variable.process->status":"وضعیت",
+		"email.template.name.request_process_done": "اتمام درست درخواست در  درخواست ها",
+		"sms.template.name.request_process_done": "اتمام درست  درخواست در  درخواست ها"
 	}
 }

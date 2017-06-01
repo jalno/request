@@ -192,9 +192,17 @@ class processes extends controller{
 				if(isset($inputs['note'])){
 					$process->setParam('note', $inputs['note']);
 				}
-				if(isset($inputs['status']) and $inputs['status'] == process::inprogress){
-					$event = new events\processes\inprogress($process);
-					$event->trigger();
+				if(isset($inputs['status'])){
+					switch($inputs['status']){
+						case(process::done):
+							$event = new events\processes\complete\done($request);
+							$event->trigger();
+							break;
+						case(process::inprogress):
+							$event = new events\processes\inprogress($process);
+							$event->trigger();
+							break;
+					}
 				}
 				$process->save();
 				$this->response->setStatus(true);
