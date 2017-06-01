@@ -113,6 +113,10 @@
 		{
 			"classes":["events\\processes\\complete\\failed"],
 			"file":"libraries/events/processes/failed.php"
+		},
+		{
+			"classes":["events\\processes\\delete"],
+			"file":"libraries/events/processes/delete.php"
 		}
 	]
 }

@@ -7,5 +7,6 @@ class notifications{
 		$events->add(requestEevents\processes\inprogress::class);
 		$events->add(requestEevents\processes\complete\done::class);
 		$events->add(requestEevents\processes\complete\failed::class);
+		$events->add(requestEevents\processes\delete::class);
 	}
 }

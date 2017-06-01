@@ -28,6 +28,8 @@
 		"email.template.name.request_process_done": "اتمام درست درخواست در  درخواست ها",
 		"sms.template.name.request_process_done": "اتمام درست  درخواست در  درخواست ها",
 		"email.template.name.request_process_failed": "اتمام ناموفق درخواست در  درخواست ها",
-		"sms.template.name.request_process_failed": "اتمام ناموفق  درخواست در  درخواست ها"
+		"sms.template.name.request_process_failed": "اتمام ناموفق  درخواست در  درخواست ها",
+		"email.template.name.request_process_delete": "حذف درخواست در  درخواست ها",
+		"sms.template.name.request_process_delete": "حذف  درخواست در  درخواست ها"
 	}
 }

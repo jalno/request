@@ -229,7 +229,10 @@ class processes extends controller{
 			$this->response->setStatus(false);
 			try{
 				$process->delete();
+				$event = new events\processes\delete($process);
+				$event->trigger();
 				$this->response->setStatus(true);
+				$this->response->Go(userpanel\url('requests'));
 			}catch(inputValidation $error){
 				$view->setFormError(FormError::fromException($error));
 			}
