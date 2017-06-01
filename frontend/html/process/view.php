@@ -50,6 +50,7 @@ $user = $this->process->user;
 						'label label-default' => process::unread,
 						'label label-inverse' => process::disagreement,
 						'label label-warning' => process::running,
+						'label label-warning inprogress' => process::inprogress,
 						'label label-danger' => process::failed,
 						'label label-inverse' => process::cancel
 					]);
@@ -60,7 +61,8 @@ $user = $this->process->user;
 						'request.process.status.disagreement' => process::disagreement,
 						'request.process.status.running' => process::running,
 						'request.process.status.failed' => process::failed,
-						'request.process.status.cancel' => process::cancel
+						'request.process.status.cancel' => process::cancel,
+						'request.process.status.inprogress' => process::inprogress
 					]);
 					?>
 		            <label class="col-xs-3"><?php echo translator::trans("request.process.status"); ?>: </label>

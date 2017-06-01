@@ -54,6 +54,10 @@ class edit extends requestEdit{
 				'title' => translator::trans("request.process.status.cancel"),
 				'value' => process::cancel
 			],
+			[
+				'title' => translator::trans("request.process.status.inprogress"),
+				'value' => process::inprogress
+			]
 		];
 	}
 }
