@@ -1,0 +1,29 @@
+{
+	"author": {
+		"name" : "Mahdi abedi",
+		"website" : "http://www.mhdabedi.tk/"
+	},
+	"rtl": true,
+	"phrases":{
+		"email.template.name.request_process_inprogress": "درحال پیگیری درخواست در  درخواست ها",
+		"sms.template.name.request_process_inprogress": "درحال پیگیری  درخواست در  درخواست ها",
+		"email.template.variable.process->id":"شناسه درخواست",
+		"email.template.variable.process->title":"عنوان درخواست",
+		"email.template.variable.process->user":"کاربر",
+		"email.template.variable.process->operator":"اپراتور",
+		"email.template.variable.process->create_at":"تاریخ ایجاد",
+		"email.template.variable.process->done_at":"زمان انجام",
+		"email.template.variable.process->type":"نوع",
+		"email.template.variable.process->parameters":"پارامتر ها",
+		"email.template.variable.process->status":"وضعیت",
+		"sms.template.variable.process->id":"شناسه درخواست",
+		"sms.template.variable.process->title":"عنوان درخواست",
+		"sms.template.variable.process->user":"کاربر",
+		"sms.template.variable.process->operator":"اپراتور",
+		"sms.template.variable.process->create_at":"تاریخ ایجاد",
+		"sms.template.variable.process->done_at":"زمان انجام",
+		"sms.template.variable.process->type":"نوع",
+		"sms.template.variable.process->parameters":"پارامتر ها",
+		"sms.template.variable.process->status":"وضعیت"
+	}
+}

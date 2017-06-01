@@ -17,6 +17,7 @@ class process extends dbObject{
 	const cancel = 7;
 	const inprogress = 8;
 	const runner = 1;
+	const process = 2;
 	private $handler;
 	protected $dbTable = "request_processes";
 	protected $primaryKey = "id";

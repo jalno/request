@@ -9,6 +9,7 @@ use \packages\base\views\FormError;
 use \packages\base\inputValidation;
 use \packages\userpanel;
 use \packages\userpanel\user;
+use \packages\request\events;
 use \packages\request\process;
 use \packages\request\controller;
 use \packages\request\authorization;
@@ -166,7 +167,8 @@ class processes extends controller{
 						process::disagreement,
 						process::running,
 						process::failed,
-						process::cancel
+						process::cancel,
+						process::inprogress
 					]
 				],
 				'note' => [
@@ -184,11 +186,15 @@ class processes extends controller{
 				}
 				foreach(['title', 'status'] as $item){
 					if(isset($inputs[$item])){
-						$process->$item = $inputs[$item];
 					}
+						$process->$item = $inputs[$item];
 				}
 				if(isset($inputs['note'])){
 					$process->setParam('note', $inputs['note']);
+				}
+				if(isset($inputs['status']) and $inputs['status'] == process::inprogress){
+					$event = new events\processes\inprogress($process);
+					$event->trigger();
 				}
 				$process->save();
 				$this->response->setStatus(true);
