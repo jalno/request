@@ -48,6 +48,10 @@ class requests extends process{
 					break;
 				case(process::error):
 					$request->status = request::failed;
+					$log->debug("send complete failed notification trigger");
+					$event = new events\processes\complete\failed($request);
+					$event->trigger();
+					$log->reply("Sent");
 					break;
 			}
 			$request->save();

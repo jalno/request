@@ -195,11 +195,15 @@ class processes extends controller{
 				if(isset($inputs['status'])){
 					switch($inputs['status']){
 						case(process::done):
-							$event = new events\processes\complete\done($request);
+							$event = new events\processes\complete\done($process);
 							$event->trigger();
 							break;
 						case(process::inprogress):
 							$event = new events\processes\inprogress($process);
+							$event->trigger();
+							break;
+						case(process::failed):
+							$event = new events\processes\complete\failed($process);
 							$event->trigger();
 							break;
 					}

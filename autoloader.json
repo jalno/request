@@ -109,6 +109,10 @@
 		{
 			"classes":["events\\processes\\complete\\done"],
 			"file":"libraries/events/processes/done.php"
+		},
+		{
+			"classes":["events\\processes\\complete\\failed"],
+			"file":"libraries/events/processes/failed.php"
 		}
 	]
 }
