@@ -36,7 +36,7 @@
 		"usertype.permissions.request_add": "افزودن درخواست",
 		"usertype.permissions.request_edit": "ویرایش درخواست",
 		"usertype.permissions.request_delete": "حذف درخواست",
-		"usertype.permissions.request_run": "اجرای درخواست",
+		"usertype.permissions.request_lunch": "اجرای درخواست",
 		"request.process.information": "مشخصات درخواست",
 		"request.process.note": "یادداشت",
 		"request.process.search.by.keyword": "کلمه کلیدی",
