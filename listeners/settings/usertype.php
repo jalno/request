@@ -8,7 +8,6 @@ class usertype{
 			'view',
 			'delete',
 			'edit',
-			'run',
 			'lunch'
 		);
 		foreach($permissions as $permission){
