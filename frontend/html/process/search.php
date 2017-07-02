@@ -143,8 +143,7 @@ $this->the_header();
 							],
 							[
 								'name' => 'user_name',
-								'label' => translator::trans("request.process.client"),
-								'ltr' => true,
+								'label' => translator::trans("request.process.client")
 							]
 						];
 						array_splice($feilds, 2, 0, $userSearch);

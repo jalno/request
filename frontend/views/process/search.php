@@ -3,7 +3,6 @@ namespace themes\clipone\views\request\process;
 use \packages\base\packages;
 use \packages\base\view\error;
 use \packages\base\translator;
-use \packages\base\frontend\theme;
 use \packages\userpanel;
 use \packages\request\authorization;
 use \packages\request\process;
@@ -21,7 +20,6 @@ class search extends requestList{
 			translator::trans('requests'),
 			translator::trans('requests.processList')
 		]);
-		$this->addAssets();
 		$this->check_multiuser();
 		$this->setButtons();
 		navigation::active("requests");
@@ -43,9 +41,6 @@ class search extends requestList{
 			], 'btns');
 		}
 		$this->addError($error);
-	}
-	private function addAssets(){
-		$this->addJSFile(theme::url('assets/js/pages/process.js'));
 	}
 	public function check_multiuser(){
 		$this->multiuser = (bool)authorization::childrenTypes();
