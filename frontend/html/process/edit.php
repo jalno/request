@@ -24,7 +24,7 @@ $this->the_header();
 				</div>
 				<div class="panel-body">
 					<div class="row">
-						<div class="col-xs-6">
+						<div class="col-sm-6">
 						<?php
 						$this->createField([
 							'name' => 'title',
@@ -38,7 +38,7 @@ $this->the_header();
 						]);
 						?>
 						</div>
-						<div class="col-xs-6">
+						<div class="col-sm-6">
 						<?php
 						$this->createField([
 							'type' => 'textarea',
@@ -50,7 +50,7 @@ $this->the_header();
 						</div>
 					</div>
 					<div class="row">
-						<div class="col-xs-3 pull-left">
+						<div class="col-sm-3 pull-left">
 							<div class="btn-group btn-group-justified">
 								<div class="btn-group">
 									<a href="<?php echo userpanel\url('requests'); ?>" class="btn btn-default"><i class="fa fa-chevron-circle-right"></i> <?php echo translator::trans("request.return"); ?></a>

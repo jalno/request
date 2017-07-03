@@ -82,7 +82,7 @@ $this->the_header();
 								}
 								?>
 								<td class="ltr"><?php echo date::format('Y/m/d H:i:s', $process->create_at); ?></td>
-								<td class="hidden-xs"><span class="<?php echo $statusClass; ?>"><?php echo translator::trans($statusTxt); ?></span></td>
+								<td><span class="<?php echo $statusClass; ?>"><?php echo translator::trans($statusTxt); ?></span></td>
 								<?php
 								if($hasButtons){
 									echo("<td class=\"center\">".$this->genButtons()."</td>");

@@ -83,7 +83,7 @@ abstract class process extends event{
 		foreach($rows as $row){
 			$html .= "<div class=\"row\">";
 			foreach($row as $box){
-				$html .= "<div class=\"col-xs-{$box->size}\">".$box->getHTML()."</div>";
+				$html .= "<div class=\"col-sm-{$box->size}\">".$box->getHTML()."</div>";
 			}
 			$html .= "</div>";
 		}
