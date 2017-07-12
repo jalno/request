@@ -8,6 +8,15 @@ use \themes\clipone\utility;
 $this->the_header();
 $user = $this->process->user;
 ?>
+<?php if($note = $this->process->param('note')){ ?>
+<div class="row">
+	<div class="col-sm-12">
+		<div class="box-note">
+			<p><?php echo nl2br($note); ?></p>
+		</div>
+	</div>
+</div>
+<?php } ?>
 <div class="row">
 	<div class="col-md-<?php echo ($user ? 6 : 12); ?>">
 		<div class="panel panel-default">

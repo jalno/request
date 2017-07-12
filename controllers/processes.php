@@ -192,7 +192,7 @@ class processes extends controller{
 				if(isset($inputs['note'])){
 					$process->setParam('note', $inputs['note']);
 				}
-				if(isset($inputs['status'])){
+				if(isset($inputs['status']) and $inputs['status'] != $process->status){
 					switch($inputs['status']){
 						case(process::done):
 							$event = new events\processes\complete\done($process);
