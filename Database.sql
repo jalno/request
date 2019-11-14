@@ -1,7 +1,3 @@
-/*
-*	Request
-*	https://git.jeyserver.com/abedi/request
-*/
 
 CREATE TABLE `request_processes` (
  `id` int(11) NOT NULL AUTO_INCREMENT,
