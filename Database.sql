@@ -14,7 +14,7 @@ CREATE TABLE `request_processes` (
  KEY `operator` (`operator`),
  CONSTRAINT `request_processes_ibfk_1` FOREIGN KEY (`user`) REFERENCES `userpanel_users` (`id`) ON DELETE CASCADE,
  CONSTRAINT `request_processes_ibfk_2` FOREIGN KEY (`operator`) REFERENCES `userpanel_users` (`id`) ON DELETE SET NULL
-) ENGINE=InnoDB AUTO_INCREMENT=122 DEFAULT CHARSET=utf8 COLLATE=utf8_persian_ci;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_persian_ci;
 
 CREATE TABLE `request_processes_params` (
  `id` int(11) NOT NULL AUTO_INCREMENT,
