@@ -8,14 +8,15 @@ use packages\userpanel\{User};
 
 class Processes extends Controller {
 	protected $authentication = true;
-	private function getProcess($data){
+	private function getProcess($data) {
 		$types = Authorization::childrenTypes();
+		$myID = Authentication::getID();
 		$process = new Process();
 		$process->join(User::class, "user", "INNER");
 		if ($types) {
 			$process->where("userpanel_users.type", $types, "IN");
 		} else {
-			$process->where("userpanel_users.id", Authentication::getID());
+			$process->where("userpanel_users.id", $myID);
 		}
 		$process->where("request_processes.id", $data["process"]);
 		$process = $process->getOne("request_processes.*");
@@ -24,7 +25,7 @@ class Processes extends Controller {
 		}
 		return $process;
 	}
-	public function search(){
+	public function search() {
 		Authorization::haveOrFail("search");
 		$view = View::byName(views\process\Search::class);
 		$this->response->setView($view);
@@ -125,124 +126,115 @@ class Processes extends Controller {
 		return $this->response;
 	}
 	public function edit($data) {
-		Authorization::haveOrFail('edit');
-		$view = View::byName(views\process\Edit::class);
+		Authorization::haveOrFail("edit");
 		$process = $this->getProcess($data);
+		$view = View::byName(views\process\Edit::class);
 		$view->setProcess($process);
 		$this->response->setView($view);
-		if(http::is_post()){
-			$this->response->setStatus(false);
-			$inputsRules = [
-				'title' => [
-					'type' => 'string',
-					'optional' => true
-				],
-				'status' => [
-					'type' => 'number',
-					'optional' => true,
-					'values' => [
-						process::done,
-						process::read,
-						process::unread,
-						process::disagreement,
-						process::running,
-						process::failed,
-						process::cancel,
-						process::inprogress
-					]
-				],
-				'note' => [
-					'type' => 'string',
-					'optional' => true,
-					'empty' => true
-				]
-			];
-			try{
-				$inputs = $this->checkinputs($inputsRules);
-				if(isset($inputs['note'])){
-					if(!$inputs['note']){
-						unset($inputs['note']);
-					}
-				}
-				foreach(['title', 'status'] as $item){
-					if(isset($inputs[$item])){
-					}
-						$process->$item = $inputs[$item];
-				}
-				if(isset($inputs['note'])){
-					$process->setParam('note', $inputs['note']);
-				}
-				if(isset($inputs['status']) and $inputs['status'] != $process->status){
-					switch($inputs['status']){
-						case(process::done):
-							$event = new events\processes\complete\done($process);
-							$event->trigger();
-							break;
-						case(process::inprogress):
-							$event = new events\processes\inprogress($process);
-							$event->trigger();
-							break;
-						case(process::failed):
-							$event = new events\processes\complete\failed($process);
-							$event->trigger();
-							break;
-					}
-				}
-				$process->save();
-				$this->response->setStatus(true);
-			}catch(inputValidation $error){
-				$view->setFormError(FormError::fromException($error));
-			}
-			$view->setDataForm($this->inputsvalue($inputsRules));
-		}else{
-			$this->response->setStatus(true);
+		$this->response->setStatus(true);
+		return $this->response;
+	}
+	public function update($data) {
+		Authorization::haveOrFail("edit");
+		$process = $this->getProcess($data);
+		$view = View::byName(views\process\Edit::class);
+		$view->setProcess($process);
+		$this->response->setView($view);
+		$inputsRules = [
+			"title" => [
+				"type" => "string",
+				"optional" => true
+			],
+			"status" => [
+				"type" => "number",
+				"optional" => true,
+				"values" => Process::STATUSES,
+			],
+			"note" => [
+				"type" => "string",
+				"optional" => true,
+				"empty" => true
+			]
+		];
+		$inputs = $this->checkinputs($inputsRules);
+		if (isset($inputs["title"]) and $inputs["title"]) {
+			$process->title = $inputs["title"];
 		}
-		
+		if (isset($inputs["note"])) {
+			if ($inputs["note"]) {
+				$process->setParam("note", $inputs["note"]);
+			} else {
+				$process->deleteParam("note", $inputs["note"]);
+			}
+		}
+		if (isset($inputs["status"]) and $inputs["status"] != $process->status) {
+			$process->status = $inputs["status"];
+			switch ($inputs["status"]) {
+				case (Process::done):
+					$event = new events\processes\complete\Done($process);
+					$event->trigger();
+					break;
+				case (Process::inprogress):
+					$event = new events\processes\InProgress($process);
+					$event->trigger();
+					break;
+				case (Process::failed):
+					$event = new events\processes\complete\Failed($process);
+					$event->trigger();
+					break;
+			}
+		}
+		$process->save();
+		$view->setDataForm($this->inputsvalue($inputsRules));
+		$this->response->setStatus(true);
 		return $this->response;
 	}
 	public function delete($data){
-		authorization::haveOrFail('delete');
+		Authorization::haveOrFail("delete");
 		$process = $this->getProcess($data);
-		$view = view::byName(views\process\Delete::class);
+		$view = View::byName(views\process\Delete::class);
 		$view->setProcess($process);
-		if(http::is_post()){
-			$this->response->setStatus(false);
-			try{
-				$process->delete();
-				$event = new events\processes\delete($process);
-				$event->trigger();
-				$this->response->setStatus(true);
-				$this->response->Go(userpanel\url('requests'));
-			}catch(inputValidation $error){
-				$view->setFormError(FormError::fromException($error));
-			}
-		}else{
-			$this->response->setStatus(true);
-		}
 		$this->response->setView($view);
+		$this->response->setStatus(true);
+		return $this->response;
+	}
+	public function destroy($data) {
+		Authorization::haveOrFail("delete");
+		$process = $this->getProcess($data);
+		$view = View::byName(views\process\Delete::class);
+		$view->setProcess($process);
+		$this->response->setView($view);
+		$process->delete();
+		$event = new events\processes\Delete($process);
+		$event->trigger();
+		$this->response->setStatus(true);
+		$this->response->Go(userpanel\url("requests"));
 		return $this->response;
 	}
 	public function lunch($data){
-		Authorization::haveOrFail('lunch');
+		Authorization::haveOrFail("lunch");
 		$process = $this->getProcess($data);
-		if(in_array($process->status, [process::done, process::running])){
+		if (in_array($process->status, [Process::done, Process::running])){
 			throw new NotFound();
 		}
-		$view = view::byName(views\process\Lunch::class);
+		$view = View::byName(views\process\Lunch::class);
 		$view->setProcess($process);
-		if(http::is_post()){
-			$this->response->setStatus(false);
-			try{
-				$process->runInBackground();
-				$this->response->setStatus(true);
-				$this->response->Go(userpanel\url('requests/view/'.$process->id));
-			}catch(inputValidation $error){
-				$view->setFormError(FormError::fromException($error));
-			}
-		}else{
-			$this->response->setStatus(true);
-		}
 		$this->response->setView($view);
+		$this->response->setStatus(true);
+		return $this->response;
+	}
+	public function do($data) {
+		Authorization::haveOrFail("lunch");
+		$process = $this->getProcess($data);
+		if (in_array($process->status, [Process::done, Process::running])){
+			throw new NotFound();
+		}
+		$view = View::byName(views\process\Lunch::class);
+		$view->setProcess($process);
+		$this->response->setView($view);
+		$process->runInBackground();
+		$this->response->Go(userpanel\url("requests/view/" . $process->id));
+		$this->response->setStatus(true);
 		return $this->response;
 	}
 }
