@@ -16,6 +16,16 @@ class process extends dbObject{
 	const failed = 6;
 	const cancel = 7;
 	const inprogress = 8;
+	const STATUSES = array(
+		self::done,
+		self::read,
+		self::unread,
+		self::disagreement,
+		self::running,
+		self::failed,
+		self::cancel,
+		self::inprogress,
+	);
 	const runner = 1;
 	const process = 2;
 	private $handler;

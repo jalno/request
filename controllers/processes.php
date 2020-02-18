@@ -1,155 +1,135 @@
 <?php
 namespace packages\request\controllers;
-use \packages\base\db;
-use \packages\base\http;
-use \packages\base\NotFound;
-use \packages\base\view\error;
-use \packages\base\db\parenthesis;
-use \packages\base\views\FormError;
-use \packages\base\inputValidation;
-use \packages\userpanel;
-use \packages\userpanel\user;
-use \packages\request\events;
-use \packages\request\process;
-use \packages\request\controller;
-use \packages\request\authorization;
-use \packages\request\view;
-use \packages\request\authentication;
-use \packages\request\events\process as event;
-class processes extends controller{
+
+use packages\base\{Process as BaseProcess, db, view\Error, views\FormError, http, InputValidation, NotFound, db\Parenthesis};
+use packages\request\{Authentication, Authorization, Controller, Events, events\Process as Event, Process, View, Views};
+use packages\userpanel;
+use packages\userpanel\{User};
+
+class Processes extends Controller {
 	protected $authentication = true;
 	private function getProcess($data){
-		$types = authorization::childrenTypes();
-		$process = new process();
-		$process->join(user::class, "user", 'INNER');
-		if($types){
-			$process->where("userpanel_users.type", $types, 'in');
-		}else{
-			$process->where("userpanel_users.id", authentication::getID());
+		$types = Authorization::childrenTypes();
+		$process = new Process();
+		$process->join(User::class, "user", "INNER");
+		if ($types) {
+			$process->where("userpanel_users.type", $types, "IN");
+		} else {
+			$process->where("userpanel_users.id", Authentication::getID());
 		}
-		$process->where('request_processes.id', $data['process']);
+		$process->where("request_processes.id", $data["process"]);
 		$process = $process->getOne("request_processes.*");
-		if(!$process){
+		if (!$process) {
 			throw new NotFound;
 		}
 		return $process;
 	}
 	public function search(){
-		authorization::haveOrFail('search');
-		$view = view::byName("\\packages\\request\\views\\process\\search");
-		$types = authorization::childrenTypes();
-		$process = new process();
+		Authorization::haveOrFail("search");
+		$view = View::byName(views\process\Search::class);
+		$this->response->setView($view);
+		$types = Authorization::childrenTypes();
+		$myID = Authentication::getID();
 		$inputsRules = [
-			'id' => [
-				'type' => 'number',
-				'optional' => true,
-				'empty' => true
+			"id" => [
+				"type" => "number",
+				"optional" => true,
 			],
-			'user' => [
-				'type' => 'number',
-				'optional' =>true,
-				'empty' => true
+			"user" => [
+				"type" => User::class,
+				"optional" =>true,
 			],
-			'title' => [
-				'type' => 'string',
-				'optional' =>true,
-				'empty' => true
+			"title" => [
+				"type" => "string",
+				"optional" =>true,
 			],
-			'status' => [
-				'type' => 'number',
-				'optional' => true,
-				'empty' => true,
-				'values' => [
-					process::done,
-					process::read,
-					process::unread,
-					process::disagreement,
-					process::running,
-					process::failed,
-					process::cancel
-				]
+			"status" => [
+				"type" => "number",
+				"optional" => true,
+				"values" => Process::STATUSES,
 			],
-			'word' => [
-				'type' => 'string',
-				'optional' => true,
-				'empty' => true
+			"word" => [
+				"type" => "string",
+				"optional" => true,
 			],
-			'comparison' => [
-				'values' => ['equals', 'startswith', 'contains'],
-				'default' => 'contains',
-				'optional' => true
+			"comparison" => [
+				"values" => ["equals", "startswith", "contains"],
+				"default" => "contains",
+				"optional" => true
 			]
 		];
-		$this->response->setStatus(true);
-		try{
-			$inputs = $this->checkinputs($inputsRules);
-			if(isset($inputs['user']) and $inputs['user']){
-				$user = user::byId($inputs['user']);
-				if(!$user){
-					throw new inputValidation("user");
+		$inputs = $this->checkinputs($inputsRules);
+		$process = new Process();
+		foreach (["id", "title", "status", "user"] as $item) {
+			if (isset($inputs[$item]) and $inputs[$item]) {
+				$comparison = $inputs["comparison"];
+				if (in_array($item, ["id", "status", "user"])) {
+					$comparison = "equals";
 				}
-			}
-			foreach(['id', 'title', 'status', 'user'] as $item){
-				if(isset($inputs[$item]) and $inputs[$item]){
-					$comparison = $inputs['comparison'];
-					if(in_array($item, ['id', 'status', 'user'])){
-						$comparison = 'equals';
-					}
-					$process->where("request_processes.".$item, $inputs[$item], $comparison);
-					if(in_array($item, ['domain', 'user'])){
-						$subService = true;
-					}
+				if ($inputs[$item] instanceof db\dbObject) {
+					$inputs[$item] = $inputs[$item]->id;
 				}
+				$process->where("request_processes." . $item, $inputs[$item], $comparison);
 			}
-			if(isset($inputs['word']) and $inputs['word']){
-				$parenthesis = new parenthesis();
-				foreach(['title'] as $item){
-					if(!isset($inputs[$item]) or !$inputs[$item]){
-						$parenthesis->where("request_processes.".$item, $inputs['word'], $inputs['comparison'], 'OR');
-					}
-				}
-				$process->where($parenthesis);
-			}
-		}catch(inputValidation $error){
-			$view->setFormError(FormError::fromException($error));
-			$this->response->setStatus(false);
 		}
-		$view->setDataForm($this->inputsvalue($inputsRules));
+		if (isset($inputs["word"]) and $inputs["word"]) {
+			$parenthesis = new Parenthesis();
+			foreach(["title"] as $item){
+				if (!isset($inputs[$item]) or !$inputs[$item]) {
+					$parenthesis->where("request_processes." . $item, $inputs["word"], $inputs["comparison"], "OR");
+				}
+			}
+			$process->where($parenthesis);
+		}
 		db::join("userpanel_users", "userpanel_users.id=request_processes.user", "INNER");
-		if($types){
-			db::where("userpanel_users.type", $types, 'in');
-		}else{
-			db::where("userpanel_users.id", authentication::getID());
+		if ($types) {
+			$process->where("userpanel_users.type", $types, "IN");
+		} else {
+			$process->where("userpanel_users.id", $myID);
 		}
-		$process->orderBy('id', 'DESC');
+		$process->orderBy("id", "DESC");
 		$process->pageLimit = $this->items_per_page;
-		$processes = $process->paginate($this->page, 'request_processes.*');
+		$processes = $process->paginate($this->page, "request_processes.*");
 		$view->setDataList($processes);
+		$view->setDataForm($this->inputsvalue($inputsRules));
 		$view->setPaginate($this->page, db::totalCount(), $this->items_per_page);
 		$this->response->setStatus(true);
-		$this->response->setView($view);
 		return $this->response;
 	}
-	public function view($data){
-		authorization::haveOrFail('view');
+	public function view($data) {
+		Authorization::haveOrFail("view");
+		$view = View::byName(views\process\View::class);
+		$this->response->setView($view);
 		$process = $this->getProcess($data);
-		$view = view::byName("\\packages\\request\\views\\process\\view");
+		if ($process->status == Process::unread and Authorization::is_accessed("lunch")) {
+			$process->status = Process::read;
+			$process->save();
+		}
 		$view->setProcess($process);
 		$process->buildFrontend($view);
 		$view->setHandler($process->getHandler());
-		if($process->status == process::unread and authorization::is_accessed('lunch')){
-			$process->status = process::read;
-			$process->save();
+		// if request failed, get last process error and if error instance of packages\base\view\Error, add it to the view
+		if ($process->status == Process::failed) {
+			$lastBaseProcess = new BaseProcess();
+			db::join("request_base", "request_base.process=base_processes.id", "INNER");
+			$lastBaseProcess->where("request_base.request", $process->id);
+			$lastBaseProcess->where("request_base.type", Process::process);
+			$lastBaseProcess->joinWhere("base_processes.status", BaseProcess::error);
+			$lastBaseProcess->orderBy("base_processes.id", "DESC");
+			$lastBaseProcess = $lastBaseProcess->getOne("base_processes.response");
+			if ($lastBaseProcess->response and $lastBaseProcess->response instanceof Error) {
+				$view->addError($lastBaseProcess->response);
+			}
 		}
 		$this->response->setStatus(true);
-		$this->response->setView($view);
 		return $this->response;
 	}
-	public function edit($data){
-		authorization::haveOrFail('edit');
+	public function edit($data) {
+		Authorization::haveOrFail('edit');
+		$view = View::byName(views\process\Edit::class);
 		$process = $this->getProcess($data);
-		$view = view::byName("\\packages\\request\\views\\process\\edit");
 		$view->setProcess($process);
+		$this->response->setView($view);
 		if(http::is_post()){
 			$this->response->setStatus(false);
 			$inputsRules = [
@@ -217,13 +197,13 @@ class processes extends controller{
 		}else{
 			$this->response->setStatus(true);
 		}
-		$this->response->setView($view);
+		
 		return $this->response;
 	}
 	public function delete($data){
 		authorization::haveOrFail('delete');
 		$process = $this->getProcess($data);
-		$view = view::byName("\\packages\\request\\views\\process\\delete");
+		$view = view::byName(views\process\Delete::class);
 		$view->setProcess($process);
 		if(http::is_post()){
 			$this->response->setStatus(false);
@@ -243,12 +223,12 @@ class processes extends controller{
 		return $this->response;
 	}
 	public function lunch($data){
-		authorization::haveOrFail('lunch');
+		Authorization::haveOrFail('lunch');
 		$process = $this->getProcess($data);
 		if(in_array($process->status, [process::done, process::running])){
 			throw new NotFound();
 		}
-		$view = view::byName("\\packages\\request\\views\\process\\lunch");
+		$view = view::byName(views\process\Lunch::class);
 		$view->setProcess($process);
 		if(http::is_post()){
 			$this->response->setStatus(false);
