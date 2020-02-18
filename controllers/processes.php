@@ -164,7 +164,7 @@ class Processes extends Controller {
 			if ($inputs["note"]) {
 				$process->setParam("note", $inputs["note"]);
 			} else {
-				$process->deleteParam("note", $inputs["note"]);
+				$process->deleteParam("note");
 			}
 		}
 		if (isset($inputs["status"]) and $inputs["status"] != $process->status) {
