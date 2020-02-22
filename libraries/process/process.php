@@ -16,6 +16,16 @@ class process extends dbObject{
 	const failed = 6;
 	const cancel = 7;
 	const inprogress = 8;
+	const STATUSES = array(
+		self::done,
+		self::read,
+		self::unread,
+		self::disagreement,
+		self::running,
+		self::failed,
+		self::cancel,
+		self::inprogress,
+	);
 	const runner = 1;
 	const process = 2;
 	private $handler;
@@ -85,17 +95,18 @@ class process extends dbObject{
 			return false;
 		}
 	}
-	public function deleteParam(string $name):bool{
-		if(!$this->id){
-			if(isset($this->tmparams[$name])){
+	public function deleteParam(string $name): bool {
+		if (!$this->id) {
+			if (isset($this->tmparams[$name])) {
 				unset($this->tmparams[$name]);
 				return true;
 			}
-		}else{
-			$param = new param();
-			$param->where("service", $this->id);
-			$param->where('name', $name);
-			if($param->getOne()){
+		} else {
+			$param = new Param();
+			$param->where("process", $this->id);
+			$param->where("name", $name);
+			$param = $param->getOne();
+			if($param){
 				return $param->delete();
 			}
 		}

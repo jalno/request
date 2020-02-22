@@ -1,27 +1,42 @@
 [
 	{
-		"path": ["userpanel", "requests"],
-		"controller": "controllers\\processes@search",
+		"path": "userpanel/requests",
+		"controller": "controllers/processes@search",
 		"method":"get"
 	},
 	{
-		"path": ["userpanel", "requests", "view", {"type":"dynamic", "name":"process", "regex":"/^(\\d+)$/"}],
-		"controller": "controllers\\processes@view",
+		"path": "userpanel/requests/view/:process",
+		"controller": "controllers/processes@view",
 		"method":"get"
 	},
 	{
-		"path": ["userpanel", "requests", "edit", {"type":"dynamic", "name":"process", "regex":"/^(\\d+)$/"}],
-		"controller": "controllers\\processes@edit",
-		"method": ["get", "post"]
+		"path": "userpanel/requests/edit/:process",
+		"controller": "controllers/processes@edit",
+		"method": "get"
 	},
 	{
-		"path": ["userpanel", "requests", "delete", {"type":"dynamic", "name":"process", "regex":"/^(\\d+)$/"}],
-		"controller": "controllers\\processes@delete",
-		"method": ["get", "post"]
+		"path": "userpanel/requests/edit/:process",
+		"controller": "controllers/processes@update",
+		"method": "post"
 	},
 	{
-		"path": ["userpanel", "requests", "lunch", {"type":"dynamic", "name":"process", "regex":"/^(\\d+)$/"}],
-		"controller": "controllers\\processes@lunch",
-		"method": ["get", "post"]
+		"path": "userpanel/requests/delete/:process",
+		"controller": "controllers/processes@delete",
+		"method": "get"
+	},
+	{
+		"path": "userpanel/requests/delete/:process",
+		"controller": "controllers/processes@destroy",
+		"method": "post"
+	},
+	{
+		"path": "userpanel/requests/lunch/:process",
+		"controller": "controllers/processes@lunch",
+		"method": "get"
+	},
+	{
+		"path": "userpanel/requests/lunch/:process",
+		"controller": "controllers/processes@do",
+		"method": "post"
 	}
 ]
