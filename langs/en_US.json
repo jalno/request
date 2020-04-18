@@ -1,0 +1,16 @@
+{
+	"author": {
+		"name" : "Hossein Hosni",
+		"website" : "http://hosseinhosni.ir"
+	},
+	"rtl": false,
+	"phrases":{
+		"usertype.permissions.request": "Requests",
+		"usertype.permissions.request_search": "Requests List",
+		"usertype.permissions.request_view": "View Request",
+		"usertype.permissions.request_add": "Add Request",
+		"usertype.permissions.request_edit": "Edit Request",
+		"usertype.permissions.request_delete": "Delete Request",
+		"usertype.permissions.request_lunch": "Lunch Request"
+	}
+}

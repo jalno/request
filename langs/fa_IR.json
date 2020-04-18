@@ -30,6 +30,14 @@
 		"email.template.name.request_process_failed": "اتمام ناموفق درخواست در  درخواست ها",
 		"sms.template.name.request_process_failed": "اتمام ناموفق  درخواست در  درخواست ها",
 		"email.template.name.request_process_delete": "حذف درخواست در  درخواست ها",
-		"sms.template.name.request_process_delete": "حذف  درخواست در  درخواست ها"
+		"sms.template.name.request_process_delete": "حذف  درخواست در  درخواست ها",
+
+		"usertype.permissions.request": "درخواست ها",
+		"usertype.permissions.request_search": "لیست درخواست ها",
+		"usertype.permissions.request_view": "مشاهده درخواست",
+		"usertype.permissions.request_add": "افزودن درخواست",
+		"usertype.permissions.request_edit": "ویرایش درخواست",
+		"usertype.permissions.request_delete": "حذف درخواست",
+		"usertype.permissions.request_lunch": "اجرای درخواست"
 	}
 }
