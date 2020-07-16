@@ -1,13 +1,11 @@
 <?php
 namespace packages\request\processes;
-use \packages\base\process;
-use \packages\base\log;
-use \packages\base\NotFound;
-use \packages\base\date;
-use \packages\request\events;
-use \packages\request\process as request;
+
+use packages\request\{events, process as request};
+use packages\base\{process, log, NotFound, date, Response, Error};
+
 class requests extends process{
-	public function runner($data){
+	public function runner($data): Response {
 		log::setLevel('debug');
 		$log = log::getInstance();
 		$log->debug("check for request parameter");
@@ -26,37 +24,40 @@ class requests extends process{
 		$log->info("running the process, if has it");
 		$handler = $request->getHandler();
 		$run = $handler->runProcess();
-		if($run){
-			$log->reply("Success");
-			$log->info("mark request as running");
-			$request->status = request::running;
-			$request->save();
-			$request->addProcess($run, request::process);
-			$log->debug("waiting for stop");
-			$time = date::time();
-			$run->waitFor();
-			$log->reply(date::time() - $time, "seconds");
-			$log->debug("change request status, if needed");
-			switch($run->status){
-				case(process::stopped):
-					$request->status = request::done;
-					$request->done_at = date::time();
-					$log->debug("send complete done notification trigger");
-					$event = new events\processes\complete\done($request);
-					$event->trigger();
-					$log->reply("Sent");
-					break;
-				case(process::error):
-					$request->status = request::failed;
-					$log->debug("send complete failed notification trigger");
-					$event = new events\processes\complete\failed($request);
-					$event->trigger();
-					$log->reply("Sent");
-					break;
-			}
-			$request->save();
-			
+		if(!$run){
+			throw new Error("Failed to run process");
 		}
-
+		$log->reply("Success");
+		$log->info("mark request as running");
+		$request->status = request::running;
+		$request->save();
+		$request->addProcess($run, request::process);
+		$log->debug("waiting for stop");
+		$time = date::time();
+		$run->waitFor(0, false);
+		$log->reply(date::time() - $time, "seconds");
+		$log->debug("change request status, if needed");
+		$response = new Response();
+		switch($run->status){
+			case(process::stopped):
+				$request->status = request::done;
+				$request->done_at = date::time();
+				$log->debug("send complete done notification trigger");
+				$event = new events\processes\complete\done($request);
+				$event->trigger();
+				$log->reply("Sent");
+				$response->setStatus(true);
+				break;
+			case(process::error):
+				$request->status = request::failed;
+				$log->debug("send complete failed notification trigger");
+				$event = new events\processes\complete\failed($request);
+				$event->trigger();
+				$log->reply("Sent");
+				$response->setStatus(false);
+				break;
+		}
+		$request->save();
+		return $response;
 	}
 }
