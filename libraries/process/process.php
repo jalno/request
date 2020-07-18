@@ -167,9 +167,16 @@ class process extends dbObject{
 		}
 		return $process;
 	}
-	public function runAndWaitFor(int $timeout = 0){
+	public function runAndWaitFor(int $timeout = 0, bool $throwable = true) {
 		$runner = $this->runInBackground($timeout);
-		return $runner->waitFor($timeout);
+		$running = $runner->waitFor($timeout, $throwable);
+		if ($runner->status == baseprocess::error) {
+			$lastProcess = $this->getLastProcess();
+			if ($throwable and $lastProcess->response instanceof \Exception) {
+				throw $lastProcess->response;
+	        }
+		}
+		return $running;
 	}
 	public function getLastProcess(){
 		if(!$this->lastProcess){
