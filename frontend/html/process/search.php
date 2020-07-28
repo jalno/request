@@ -49,7 +49,7 @@ $this->the_header();
 								$this->setButtonParam('edit', 'link', userpanel\url("requests/edit/".$process->id));
 								$this->setButtonParam('delete', 'link', userpanel\url("requests/delete/".$process->id));
 								$this->setButtonParam('lunch', 'link', userpanel\url("requests/lunch/".$process->id));
-								$this->setButtonActive('lunch', !in_array($process->status, [process::done, process::running]));
+								$this->setButtonActive('lunch', $this->canLunch and !in_array($process->status, [process::done, process::running]));
 								$statusClass = utility::switchcase($process->status, [
 									'label label-success' => process::done,
 									'label label-info' => process::read,
