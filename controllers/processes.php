@@ -10,18 +10,17 @@ class Processes extends Controller {
 	protected $authentication = true;
 	private function getProcess($data) {
 		$types = Authorization::childrenTypes();
-		$myID = Authentication::getID();
 		$process = new Process();
-		$process->join(User::class, "user", "INNER");
+		$process->with("user");
 		if ($types) {
 			$process->where("userpanel_users.type", $types, "IN");
 		} else {
-			$process->where("userpanel_users.id", $myID);
+			$process->where("request_processes.user", Authentication::getID());
 		}
 		$process->where("request_processes.id", $data["process"]);
-		$process = $process->getOne("request_processes.*");
+		$process = $process->getOne();
 		if (!$process) {
-			throw new NotFound;
+			throw new NotFound();
 		}
 		return $process;
 	}
@@ -30,7 +29,6 @@ class Processes extends Controller {
 		$view = View::byName(views\process\Search::class);
 		$this->response->setView($view);
 		$types = Authorization::childrenTypes();
-		$myID = Authentication::getID();
 		$inputsRules = [
 			"id" => [
 				"type" => "number",
@@ -54,6 +52,7 @@ class Processes extends Controller {
 				"optional" => true,
 			],
 			"comparison" => [
+				"type" => "string",
 				"values" => ["equals", "startswith", "contains"],
 				"default" => "contains",
 				"optional" => true
@@ -61,39 +60,34 @@ class Processes extends Controller {
 		];
 		$inputs = $this->checkinputs($inputsRules);
 		$process = new Process();
+		$process->with("user");
 		foreach (["id", "title", "status", "user"] as $item) {
-			if (isset($inputs[$item]) and $inputs[$item]) {
-				$comparison = $inputs["comparison"];
-				if (in_array($item, ["id", "status", "user"])) {
-					$comparison = "equals";
-				}
-				if ($inputs[$item] instanceof db\dbObject) {
+			if (!isset($inputs[$item])) {
+				continue;
+			}
+			$comparison = $inputs["comparison"];
+			if ($item != "title") {
+				$comparison = "equals";
+				if ($item == "user") {
 					$inputs[$item] = $inputs[$item]->id;
 				}
-				$process->where("request_processes." . $item, $inputs[$item], $comparison);
 			}
+			$process->where("request_processes." . $item, $inputs[$item], $comparison);
 		}
-		if (isset($inputs["word"]) and $inputs["word"]) {
-			$parenthesis = new Parenthesis();
-			foreach(["title"] as $item){
-				if (!isset($inputs[$item]) or !$inputs[$item]) {
-					$parenthesis->where("request_processes." . $item, $inputs["word"], $inputs["comparison"], "OR");
-				}
-			}
-			$process->where($parenthesis);
+		if (isset($inputs["word"]) and !isset($inputs["title"])) {
+			$process->where("request_processes.title", $inputs["word"], $inputs["comparison"]);
 		}
-		db::join("userpanel_users", "userpanel_users.id=request_processes.user", "INNER");
 		if ($types) {
 			$process->where("userpanel_users.type", $types, "IN");
 		} else {
-			$process->where("userpanel_users.id", $myID);
+			$process->where("request_processes.user", Authentication::getID());
 		}
-		$process->orderBy("id", "DESC");
+		$process->orderBy("request_processes.id", "DESC");
 		$process->pageLimit = $this->items_per_page;
-		$processes = $process->paginate($this->page, "request_processes.*");
+		$processes = $process->paginate($this->page);
 		$view->setDataList($processes);
+		$view->setPaginate($this->page, $process->totalCount, $this->items_per_page);
 		$view->setDataForm($this->inputsvalue($inputsRules));
-		$view->setPaginate($this->page, db::totalCount(), $this->items_per_page);
 		$this->response->setStatus(true);
 		return $this->response;
 	}
