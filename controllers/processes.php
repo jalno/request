@@ -7,40 +7,51 @@ use packages\userpanel;
 use packages\userpanel\{User};
 
 class Processes extends Controller {
-	protected $authentication = true;
-	private function getProcess($data) {
+	private static function getProcess($data): Process {
+		$me = Authentication::getID();
 		$types = Authorization::childrenTypes();
-		$process = new Process();
-		$process->with("user");
+		$model = new Process();
+		$model->with("user");
 		if ($types) {
-			$process->where("userpanel_users.type", $types, "IN");
+			$model->where("userpanel_users.type", $types, "IN");
 		} else {
-			$process->where("request_processes.user", Authentication::getID());
+			$model->where("request_processes.user", $me);
 		}
-		$process->where("request_processes.id", $data["process"]);
-		$process = $process->getOne();
+		$model->where("request_processes.id", $data["process"]);
+		$process = $model->getOne();
 		if (!$process) {
 			throw new NotFound();
 		}
 		return $process;
 	}
+
+	protected $authentication = true;
+
 	public function search() {
 		Authorization::haveOrFail("search");
 		$view = View::byName(views\process\Search::class);
 		$this->response->setView($view);
+		$me = Authentication::getID();
 		$types = Authorization::childrenTypes();
-		$inputsRules = [
+		$inputs = $this->checkinputs(array(
 			"id" => [
 				"type" => "number",
 				"optional" => true,
 			],
 			"user" => [
 				"type" => User::class,
-				"optional" =>true,
+				"optional" => true,
+				"query" => function($query) use ($types, $me) {
+					if ($types) {
+						$query->where("type", $types, "IN");
+					} else {
+						$query->where("id", $me);
+					}
+				}
 			],
 			"title" => [
 				"type" => "string",
-				"optional" =>true,
+				"optional" => true,
 			],
 			"status" => [
 				"type" => "number",
@@ -57,10 +68,9 @@ class Processes extends Controller {
 				"default" => "contains",
 				"optional" => true
 			]
-		];
-		$inputs = $this->checkinputs($inputsRules);
-		$process = new Process();
-		$process->with("user");
+		));
+		$model = new Process();
+		$model->with("user");
 		foreach (["id", "title", "status", "user"] as $item) {
 			if (!isset($inputs[$item])) {
 				continue;
@@ -72,30 +82,29 @@ class Processes extends Controller {
 					$inputs[$item] = $inputs[$item]->id;
 				}
 			}
-			$process->where("request_processes." . $item, $inputs[$item], $comparison);
+			$model->where("request_processes." . $item, $inputs[$item], $comparison);
 		}
 		if (isset($inputs["word"]) and !isset($inputs["title"])) {
-			$process->where("request_processes.title", $inputs["word"], $inputs["comparison"]);
+			$model->where("request_processes.title", $inputs["word"], $inputs["comparison"]);
 		}
 		if ($types) {
-			$process->where("userpanel_users.type", $types, "IN");
+			$model->where("userpanel_users.type", $types, "IN");
 		} else {
-			$process->where("request_processes.user", Authentication::getID());
+			$model->where("request_processes.user", $me);
 		}
-		$process->orderBy("request_processes.id", "DESC");
-		$process->pageLimit = $this->items_per_page;
-		$processes = $process->paginate($this->page);
+		$model->orderBy("request_processes.id", "DESC");
+		$model->pageLimit = $this->items_per_page;
+		$processes = $model->paginate($this->page);
 		$view->setDataList($processes);
-		$view->setPaginate($this->page, $process->totalCount, $this->items_per_page);
-		$view->setDataForm($this->inputsvalue($inputsRules));
+		$view->setPaginate($this->page, $model->totalCount, $this->items_per_page);
 		$this->response->setStatus(true);
 		return $this->response;
 	}
 	public function view($data) {
 		Authorization::haveOrFail("view");
+		$process = self::getProcess($data);
 		$view = View::byName(views\process\View::class);
 		$this->response->setView($view);
-		$process = $this->getProcess($data);
 		if ($process->status == Process::unread and Authorization::is_accessed("lunch")) {
 			$process->status = Process::read;
 			$process->save();
@@ -121,7 +130,7 @@ class Processes extends Controller {
 	}
 	public function edit($data) {
 		Authorization::haveOrFail("edit");
-		$process = $this->getProcess($data);
+		$process = self::getProcess($data);
 		$view = View::byName(views\process\Edit::class);
 		$view->setProcess($process);
 		$this->response->setView($view);
@@ -130,7 +139,7 @@ class Processes extends Controller {
 	}
 	public function update($data) {
 		Authorization::haveOrFail("edit");
-		$process = $this->getProcess($data);
+		$process = self::getProcess($data);
 		$view = View::byName(views\process\Edit::class);
 		$view->setProcess($process);
 		$this->response->setView($view);
@@ -185,7 +194,7 @@ class Processes extends Controller {
 	}
 	public function delete($data){
 		Authorization::haveOrFail("delete");
-		$process = $this->getProcess($data);
+		$process = self::getProcess($data);
 		$view = View::byName(views\process\Delete::class);
 		$view->setProcess($process);
 		$this->response->setView($view);
@@ -194,7 +203,7 @@ class Processes extends Controller {
 	}
 	public function destroy($data) {
 		Authorization::haveOrFail("delete");
-		$process = $this->getProcess($data);
+		$process = self::getProcess($data);
 		$view = View::byName(views\process\Delete::class);
 		$view->setProcess($process);
 		$this->response->setView($view);
@@ -207,7 +216,7 @@ class Processes extends Controller {
 	}
 	public function lunch($data){
 		Authorization::haveOrFail("lunch");
-		$process = $this->getProcess($data);
+		$process = self::getProcess($data);
 		if (in_array($process->status, [Process::done, Process::running])){
 			throw new NotFound();
 		}
@@ -219,7 +228,7 @@ class Processes extends Controller {
 	}
 	public function do($data) {
 		Authorization::haveOrFail("lunch");
-		$process = $this->getProcess($data);
+		$process = self::getProcess($data);
 		if (in_array($process->status, [Process::done, Process::running])){
 			throw new NotFound();
 		}
