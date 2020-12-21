@@ -20,6 +20,10 @@
 			"listener": "listeners/search@find"
 		},
 		{
+			"name":"packages/userpanel/events/Users/BeforeDelete",
+			"listener": "listeners/userpanel/users/BeforeDelete@check"
+		},
+		{
 			"name":"packages/notifications/events",
 			"listener": "listeners/notifications@events"
 		}
