@@ -38,6 +38,12 @@
 		"usertype.permissions.request_add": "افزودن درخواست",
 		"usertype.permissions.request_edit": "ویرایش درخواست",
 		"usertype.permissions.request_delete": "حذف درخواست",
-		"usertype.permissions.request_lunch": "اجرای درخواست"
+		"usertype.permissions.request_lunch": "اجرای درخواست",
+
+		"error.packages.request.error.requests.user.delete_user_warn": "هشدار در خصوص درخواست های این کاربر",
+		"error.packages.request.error.requests.user.delete_user_warn.message": "این کاربر دارای درخواست یا درخواست هایی می باشد؛ در صورت حذف این کاربر، تمامی درخواست های ایشان نیز حذف خواهند شد!",
+		"packages.request.error.requests.user.delete_user_warn.view_requests": "در صورت نیاز می توانید با استفاده از لینک زیر درخواست های این کاربر را مشاهده بفرمایید.",
+		"packages.request.error.requests.user.delete_user_warn.view_requests.tell_someone": "در صورتی که قصد مشاهده درخواست های این کاربر را دارید، از شخصی که این دسترسی را دارا می باشد درخواست نمایید!",
+		"packages.request.error.requests.user.delete_user_warn.view_requests_btn": "مشاهده درخواست های این کاربر"
 	}
 }
