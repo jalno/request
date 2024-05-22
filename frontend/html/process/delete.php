@@ -1,6 +1,7 @@
 <?php
-use \packages\base\Translator;
-use \packages\userpanel;
+use packages\base\Translator;
+use packages\userpanel;
+
 $this->the_header();
 ?>
 <div class="row">
@@ -9,11 +10,11 @@ $this->the_header();
 			<div class="alert alert-block alert-warning fade in">
 				<h4 class="alert-heading"><i class="fa fa-exclamation-triangle"></i> <?php echo Translator::trans('attention'); ?>!</h4>
 				<p>
-					<?php echo Translator::trans("request.process.delete.warning", array('id' => $this->process->id)); ?>
+					<?php echo Translator::trans('request.process.delete.warning', ['id' => $this->process->id]); ?>
 				</p>
 				<p>
 					<a href="<?php echo userpanel\url('requests/view/'.$this->process->id); ?>" class="btn btn-light-grey"><i class="fa fa-chevron-circle-right"></i> <?php echo Translator::trans('request.return'); ?></a>
-					<button type="submit" class="btn btn-danger"><i class="fa fa-trash-o"></i> <?php echo Translator::trans("request.delete") ?></button>
+					<button type="submit" class="btn btn-danger"><i class="fa fa-trash-o"></i> <?php echo Translator::trans('request.delete'); ?></button>
 				</p>
 			</div>
 		</form>
