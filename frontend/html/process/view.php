@@ -1,10 +1,10 @@
 <?php
-use \packages\base\translator;
+use \packages\base\Translator;
 use \packages\userpanel;
-use \packages\userpanel\user;
-use \packages\userpanel\date;
-use \packages\request\process;
-use \themes\clipone\utility;
+use \packages\userpanel\User;
+use \packages\userpanel\Date;
+use \packages\request\Process;
+use \themes\clipone\Utility;
 $this->the_header();
 $user = $this->process->user;
 ?>
@@ -21,61 +21,61 @@ $user = $this->process->user;
 	<div class="col-md-<?php echo ($user ? 6 : 12); ?>">
 		<div class="panel panel-default">
 		    <div class="panel-heading">
-		        <i class="fa fa-external-link-square"></i> <?php echo translator::trans("request.process.information"); ?>
+		        <i class="fa fa-external-link-square"></i> <?php echo Translator::trans("request.process.information"); ?>
 		        <div class="panel-tools">
 				<?php if($this->canEdit){ ?>
-				<a class="btn btn-xs btn-link tooltips" href="<?php echo userpanel\url('requests/edit/'.$this->process->id); ?>" title="<?php echo translator::trans('request.processEdit'); ?>"><i class="fa fa-wrench tip"></i></a>
+				<a class="btn btn-xs btn-link tooltips" href="<?php echo userpanel\url('requests/edit/'.$this->process->id); ?>" title="<?php echo Translator::trans('request.processEdit'); ?>"><i class="fa fa-wrench tip"></i></a>
 				<?php 
 				}
 				if($this->canLunch and !in_array($this->process->status, [process::done, process::running])){
 				?>
-				<a class="btn btn-xs btn-link tooltips" href="<?php echo userpanel\url('requests/lunch/'.$this->process->id); ?>" title="<?php echo translator::trans('request.processLunch'); ?>"><i class="fa fa-undo tip"></i></a>
+				<a class="btn btn-xs btn-link tooltips" href="<?php echo userpanel\url('requests/lunch/'.$this->process->id); ?>" title="<?php echo Translator::trans('request.processLunch'); ?>"><i class="fa fa-undo tip"></i></a>
 				<?php } ?>
 		            <a class="btn btn-xs btn-link panel-collapse collapses" href="#"></a>
 		        </div>
 		    </div>
 		    <div class="panel-body form-horizontal">
 		        <div class="form-group">
-		            <label class="col-xs-3"><?php echo translator::trans("request.process.title"); ?>: </label>
+		            <label class="col-xs-3"><?php echo Translator::trans("request.process.title"); ?>: </label>
 		            <div class="col-xs-9"><?php echo $this->process->title; ?></div>
 		        </div>
 		        <div class="form-group">
-		            <label class="col-xs-3"><?php echo translator::trans("request.process.create_at"); ?>: </label>
+		            <label class="col-xs-3"><?php echo Translator::trans("request.process.create_at"); ?>: </label>
 		            <div class="col-xs-9 ltr"><?php echo date::format('Y/m/d H:i:s', $this->process->create_at); ?></div>
 		        </div>
 		        <div class="form-group">
-		            <label class="col-xs-3"><?php echo translator::trans("request.process.operator"); ?>: </label>
-		            <div class="col-xs-9"><?php echo $this->process->operator‌ ? $this->process->operator->getFulleName() : translator::trans("request.process.operator.server"); ?></div>
+		            <label class="col-xs-3"><?php echo Translator::trans("request.process.operator"); ?>: </label>
+		            <div class="col-xs-9"><?php echo $this->process->operator‌ ? $this->process->operator->getFulleName() : Translator::trans("request.process.operator.server"); ?></div>
 		        </div>
 				<div class="form-group">
-		            <label class="col-xs-3"><?php echo translator::trans("request.process.done_at"); ?>: </label>
-		            <div class="col-xs-9 ltr"><?php echo $this->process->done_at ? date::format('Y/m/d H:i:s', $this->process->done_at) : '-'; ?></div>
+		            <label class="col-xs-3"><?php echo Translator::trans("request.process.done_at"); ?>: </label>
+		            <div class="col-xs-9 ltr"><?php echo $this->process->done_at ? Date::format('Y/m/d H:i:s', $this->process->done_at) : '-'; ?></div>
 		        </div>
 				<div class="form-group">
 					<?php
-					$statusClass = utility::switchcase($this->process->status, [
-						'label label-success' => process::done,
-						'label label-info' => process::read,
-						'label label-default' => process::unread,
-						'label label-inverse' => process::disagreement,
-						'label label-warning' => process::running,
-						'label label-warning inprogress' => process::inprogress,
-						'label label-danger' => process::failed,
-						'label label-inverse' => process::cancel
+					$statusClass = Utility::switchcase($this->process->status, [
+						'label label-success' => Process::done,
+						'label label-info' => Process::read,
+						'label label-default' => Process::unread,
+						'label label-inverse' =>[Process::disagreement,Process::cancel],
+						'label label-warning' => Process::running,
+						'label label-warning inprogress' => Process::inprogress,
+						'label label-danger' => Process::failed,
+
 					]);
-					$statusTxt = utility::switchcase($this->process->status, [
-						'request.process.status.done' => process::done,
-						'request.process.status.read' => process::read,
-						'request.process.status.unread' => process::unread,
-						'request.process.status.disagreement' => process::disagreement,
-						'request.process.status.running' => process::running,
-						'request.process.status.failed' => process::failed,
-						'request.process.status.cancel' => process::cancel,
-						'request.process.status.inprogress' => process::inprogress
+					$statusTxt = Utility::switchcase($this->process->status, [
+						'request.process.status.done' => Process::done,
+						'request.process.status.read' => Process::read,
+						'request.process.status.unread' => Process::unread,
+						'request.process.status.disagreement' => Process::disagreement,
+						'request.process.status.running' => Process::running,
+						'request.process.status.failed' => Process::failed,
+						'request.process.status.cancel' => Process::cancel,
+						'request.process.status.inprogress' => Process::inprogress
 					]);
 					?>
-		            <label class="col-xs-3"><?php echo translator::trans("request.process.status"); ?>: </label>
-		            <div class="col-xs-9"><span class="<?php echo $statusClass; ?>"><?php echo translator::trans($statusTxt); ?></span></div>
+		            <label class="col-xs-3"><?php echo Translator::trans("request.process.status"); ?>: </label>
+		            <div class="col-xs-9"><span class="<?php echo $statusClass; ?>"><?php echo Translator::trans($statusTxt); ?></span></div>
 		        </div>
 		    </div>
 		</div>
@@ -84,43 +84,43 @@ $user = $this->process->user;
 	<div class="col-md-6">
 	    <div class="panel panel-default">
 	        <div class="panel-heading">
-	            <i class="fa fa-user"></i><?php echo translator::trans("request.process.client"); ?>
+	            <i class="fa fa-user"></i><?php echo Translator::trans("request.process.client"); ?>
 	            <div class="panel-tools">
 	                <a class="btn btn-xs btn-link panel-collapse collapses" href="#"></a>
 	            </div>
 	        </div>
 	        <div class="panel-body form-horizontal">
 	            <div class="form-group">
-	                <label class="col-xs-4"><?php echo translator::trans("request.process.client.fullName"); ?>: </label>
+	                <label class="col-xs-4"><?php echo Translator::trans("request.process.client.fullName"); ?>: </label>
 	                <div class="col-xs-8"><?php echo $user->getFullName(); ?></div>
 	            </div>
 	            <div class="form-group">
-	                <label class="col-xs-4"><?php echo translator::trans("request.process.client.email"); ?>: </label>
+	                <label class="col-xs-4"><?php echo Translator::trans("request.process.client.email"); ?>: </label>
 	                <div class="col-xs-8"><?php echo $user->email; ?></div>
 	            </div>
 	            <div class="form-group">
-	                <label class="col-xs-4"><?php echo translator::trans("request.process.client.cellphone"); ?>: </label>
+	                <label class="col-xs-4"><?php echo Translator::trans("request.process.client.cellphone"); ?>: </label>
 	                <div class="col-xs-8"><?php echo $user->cellphone; ?></div>
 	            </div>
 	            <div class="form-group">
-	                <label class="col-xs-4"><?php echo translator::trans("request.process.client.type"); ?>: </label>
+	                <label class="col-xs-4"><?php echo Translator::trans("request.process.client.type"); ?>: </label>
 	                <div class="col-xs-8"><?php echo $user->type->title; ?></div>
 	            </div>
 	            <div class="form-group">
 					<?php
-					$statusClass = utility::switchcase($user->status, array(
-						'label label-inverse' => user::deactive,
-						'label label-success' => user::active,
-						'label label-warning' => user::suspend
+					$statusClass = Utility::switchcase($user->status, array(
+						'label label-inverse' => User::deactive,
+						'label label-success' => User::active,
+						'label label-warning' => User::suspend
 					));
-					$statusTxt = utility::switchcase($user->status, array(
-						'deactive' => user::deactive,
-						'active' => user::active,
-						'suspend' => user::suspend
+					$statusTxt = Utility::switchcase($user->status, array(
+						'deactive' => User::deactive,
+						'active' => User::active,
+						'suspend' => User::suspend
 					));
 					?>
-	                <label class="col-xs-4"><?php echo translator::trans("request.process.client.status"); ?>: </label>
-	                <div class="col-xs-8"><span class="<?php echo $statusClass; ?>"><?php echo translator::trans($statusTxt); ?></span></div>
+	                <label class="col-xs-4"><?php echo Translator::trans("request.process.client.status"); ?>: </label>
+	                <div class="col-xs-8"><span class="<?php echo $statusClass; ?>"><?php echo Translator::trans($statusTxt); ?></span></div>
 	            </div>
 	        </div>
 	    </div>
@@ -128,7 +128,6 @@ $user = $this->process->user;
 	<?php } ?>
 </div>
 <?php
-echo $this->handler->generateShortcuts();
 echo $this->handler->generateRows(); 
 ?>
 <?php
