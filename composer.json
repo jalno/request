@@ -1,0 +1,21 @@
+{
+    "name": "jalno/request",
+    "type": "library",
+    "license": "MIT",
+    "minimum-stability": "dev",
+    "prefer-stable": true,
+    "require": {
+        "jalno/base": "@dev",
+        "jalno/userpanel": "@dev"
+    },
+    "autoload": {
+        "psr-4": {
+            "packages\\request\\": [
+                "libraries/"
+            ],
+            "themes\\clipone\\Views\\Request\\": [
+                "frontend/Views/"
+            ]
+        }
+    }
+}
