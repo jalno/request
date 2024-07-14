@@ -17,5 +17,10 @@
                 "frontend/Views/"
             ]
         }
+    },
+    "extra": {
+        "jalno": {
+            "manifest": "package.json"
+        }
     }
 }

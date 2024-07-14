@@ -9,23 +9,22 @@
 		"fa_IR" : "langs/fa_IR.json",
 		"en_US" : "langs/en_US.json"
 	},
-	"dependencies": ["base", "userpanel"],
 	"events": [
 		{
-			"name":"packages/userpanel/events/usertype_permissions_list",
-			"listener": "listeners/settings/usertype@permissions_list"
+			"name":"packages/userpanel/Events/UserTypePermissionsList",
+			"listener": "packages/request/Listeners/Settings/UserType@permissions_list"
 		},
 		{
-			"name":"packages/userpanel/events/search",
-			"listener": "listeners/search@find"
+			"name":"packages/userpanel/Events/Search",
+			"listener": "packages/request/Listeners/Search@find"
 		},
 		{
-			"name":"packages/userpanel/events/Users/BeforeDelete",
-			"listener": "listeners/userpanel/users/BeforeDelete@check"
+			"name":"packages/userpanel/Events/Users/BeforeDelete",
+			"listener": "packages/request/Listeners/UserPanel/Users/BeforeDelete@check"
 		},
 		{
-			"name":"packages/notifications/events",
-			"listener": "listeners/notifications@events"
+			"name":"packages/notifications/Events",
+			"listener": "packages/request/Listeners/Notifications@events"
 		}
 	]
 }

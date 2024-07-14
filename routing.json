@@ -1,42 +1,42 @@
 [
 	{
 		"path": "userpanel/requests",
-		"controller": "controllers/processes@search",
+		"controller": "packages/request/Controllers/Processes@search",
 		"method":"get"
 	},
 	{
 		"path": "userpanel/requests/view/:process",
-		"controller": "controllers/processes@view",
+		"controller": "packages/request/Controllers/Processes@view",
 		"method":"get"
 	},
 	{
 		"path": "userpanel/requests/edit/:process",
-		"controller": "controllers/processes@edit",
+		"controller": "packages/request/Controllers/Processes@edit",
 		"method": "get"
 	},
 	{
 		"path": "userpanel/requests/edit/:process",
-		"controller": "controllers/processes@update",
+		"controller": "packages/request/Controllers/Processes@update",
 		"method": "post"
 	},
 	{
 		"path": "userpanel/requests/delete/:process",
-		"controller": "controllers/processes@delete",
+		"controller": "packages/request/Controllers/Processes@delete",
 		"method": "get"
 	},
 	{
 		"path": "userpanel/requests/delete/:process",
-		"controller": "controllers/processes@destroy",
+		"controller": "packages/request/Controllers/Processes@destroy",
 		"method": "post"
 	},
 	{
 		"path": "userpanel/requests/lunch/:process",
-		"controller": "controllers/processes@lunch",
+		"controller": "packages/request/Controllers/Processes@lunch",
 		"method": "get"
 	},
 	{
 		"path": "userpanel/requests/lunch/:process",
-		"controller": "controllers/processes@do",
+		"controller": "packages/request/Controllers/Processes@do",
 		"method": "post"
 	}
 ]
