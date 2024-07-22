@@ -12,7 +12,7 @@ use packages\request\Controller;
 use packages\request\Events;
 use packages\request\Process;
 use packages\request\View;
-use packages\request\Views;
+use themes\clipone\Views\Request\Process as ProcessViews;
 use packages\userpanel;
 use packages\userpanel\{User};
 
@@ -43,7 +43,7 @@ class Processes extends Controller
     public function search()
     {
         Authorization::haveOrFail('search');
-        $view = View::byName(Views\Process\Search::class);
+        $view = View::byName(ProcessViews\Search::class);
         $this->response->setView($view);
         $me = Authentication::getID();
         $types = Authorization::childrenTypes();
@@ -120,7 +120,7 @@ class Processes extends Controller
     {
         Authorization::haveOrFail('view');
         $process = self::getProcess($data);
-        $view = View::byName(Views\Process\View::class);
+        $view = View::byName(ProcessViews\View::class);
         $this->response->setView($view);
         if (Process::unread == $process->status and Authorization::is_accessed('lunch')) {
             $process->status = Process::read;
@@ -151,7 +151,7 @@ class Processes extends Controller
     {
         Authorization::haveOrFail('edit');
         $process = self::getProcess($data);
-        $view = View::byName(Views\Process\Edit::class);
+        $view = View::byName(ProcessViews\Edit::class);
         $view->setProcess($process);
         $this->response->setView($view);
         $this->response->setStatus(true);
@@ -163,7 +163,7 @@ class Processes extends Controller
     {
         Authorization::haveOrFail('edit');
         $process = self::getProcess($data);
-        $view = View::byName(Views\Process\Edit::class);
+        $view = View::byName(ProcessViews\Edit::class);
         $view->setProcess($process);
         $this->response->setView($view);
         $inputsRules = [
@@ -221,7 +221,7 @@ class Processes extends Controller
     {
         Authorization::haveOrFail('delete');
         $process = self::getProcess($data);
-        $view = View::byName(Views\Process\Delete::class);
+        $view = View::byName(ProcessViews\Delete::class);
         $view->setProcess($process);
         $this->response->setView($view);
         $this->response->setStatus(true);
@@ -233,7 +233,7 @@ class Processes extends Controller
     {
         Authorization::haveOrFail('delete');
         $process = self::getProcess($data);
-        $view = View::byName(Views\Process\Delete::class);
+        $view = View::byName(ProcessViews\Delete::class);
         $view->setProcess($process);
         $this->response->setView($view);
         $process->delete();
@@ -252,7 +252,7 @@ class Processes extends Controller
         if (in_array($process->status, [Process::done, Process::running])) {
             throw new NotFound();
         }
-        $view = View::byName(Views\Process\Lunch::class);
+        $view = View::byName(ProcessViews\Lunch::class);
         $view->setProcess($process);
         $this->response->setView($view);
         $this->response->setStatus(true);
@@ -267,7 +267,7 @@ class Processes extends Controller
         if (in_array($process->status, [Process::done, Process::running])) {
             throw new NotFound();
         }
-        $view = View::byName(Views\Process\Lunch::class);
+        $view = View::byName(ProcessViews\Lunch::class);
         $view->setProcess($process);
         $this->response->setView($view);
         $process->runInBackground();
