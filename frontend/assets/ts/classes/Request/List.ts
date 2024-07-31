@@ -1,4 +1,3 @@
-import * as $ from "jquery";
 import "../jquery.userAutoComplete";
 export default class List{
 	private static $form = $('#processSearch');

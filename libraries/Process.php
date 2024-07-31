@@ -9,6 +9,7 @@ use packages\base\Process as BaseProcess;
 use packages\request\Exceptions\TypeException;
 use packages\request\Process\Param;
 use packages\userpanel\User;
+use packages\request\Processes;
 
 class Process extends DBObject
 {
@@ -170,7 +171,7 @@ class Process extends DBObject
             $allbaseProcesses = [];
         }
         $process = new BaseProcess();
-        $process->name = 'packages\\request\\processes\\requests@runner';
+        $process->name = Processes\Requests::class .'@runner';
         $process->parameters = [
             'request' => $this->id,
         ];
