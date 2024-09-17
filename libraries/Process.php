@@ -170,7 +170,7 @@ class Process extends DBObject
             $allbaseProcesses = [];
         }
         $process = new BaseProcess();
-        $process->name = 'packages\\request\\processes\\requests@runner';
+        $process->name = Processes\Requests::class .  '@runner';
         $process->parameters = [
             'request' => $this->id,
         ];
