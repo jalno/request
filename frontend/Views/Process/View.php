@@ -18,8 +18,8 @@ class View extends RequestView
         $this->process = $this->getProcess();
         $this->handler = $this->getHandler();
         $this->setTitle([
-            Translator::trans('requests'),
-            Translator::trans('request.processView'),
+            t('requests'),
+            t('request.processView'),
         ]);
         Navigation::active('requests');
     }

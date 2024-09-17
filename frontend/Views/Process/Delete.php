@@ -18,8 +18,8 @@ class Delete extends RequestDelete
     {
         $this->process = $this->getProcess();
         $this->setTitle([
-            Translator::trans('requests'),
-            Translator::trans('request.processDelete'),
+            t('requests'),
+            t('request.processDelete'),
         ]);
         Navigation::active('requests');
     }

@@ -1,7 +1,8 @@
 {
-  "dependencies": {
-    "jquery": "^3.2.1",
-    "jquery-ui": "^1.12.1",
-    "webuilder": "1.1.3"
-  }
+	"name": "jalno-request-frontend",
+	"dependencies": {
+		"jquery": "^3.2.1",
+		"jquery-ui": "^1.12.1",
+		"webuilder": "1.1.3"
+	}
 }

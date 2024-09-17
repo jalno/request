@@ -19,8 +19,8 @@ class Edit extends RequestEdit
     {
         $this->process = $this->getProcess();
         $this->setTitle([
-            Translator::trans('requests'),
-            Translator::trans('request.processEdit'),
+            t('requests'),
+            t('request.processEdit'),
         ]);
         Navigation::active('requests');
     }
@@ -29,39 +29,39 @@ class Edit extends RequestEdit
     {
         return [
             [
-                'title' => Translator::trans('choose'),
+                'title' => t('choose'),
                 'value' => '',
             ],
             [
-                'title' => Translator::trans('request.process.status.done'),
+                'title' => t('request.process.status.done'),
                 'value' => Process::done,
             ],
             [
-                'title' => Translator::trans('request.process.status.read'),
+                'title' => t('request.process.status.read'),
                 'value' => Process::read,
             ],
             [
-                'title' => Translator::trans('request.process.status.unread'),
+                'title' => t('request.process.status.unread'),
                 'value' => Process::unread,
             ],
             [
-                'title' => Translator::trans('request.process.status.disagreement'),
+                'title' => t('request.process.status.disagreement'),
                 'value' => Process::disagreement,
             ],
             [
-                'title' => Translator::trans('request.process.status.running'),
+                'title' => t('request.process.status.running'),
                 'value' => Process::running,
             ],
             [
-                'title' => Translator::trans('request.process.status.failed'),
+                'title' => t('request.process.status.failed'),
                 'value' => Process::failed,
             ],
             [
-                'title' => Translator::trans('request.process.status.cancel'),
+                'title' => t('request.process.status.cancel'),
                 'value' => Process::cancel,
             ],
             [
-                'title' => Translator::trans('request.process.status.inprogress'),
+                'title' => t('request.process.status.inprogress'),
                 'value' => Process::inprogress,
             ],
         ];

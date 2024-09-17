@@ -1,0 +1,14 @@
+{
+  "usertype.permissions.request": "Requests",
+  "usertype.permissions.request_search": "Requests List",
+  "usertype.permissions.request_view": "View Request",
+  "usertype.permissions.request_add": "Add Request",
+  "usertype.permissions.request_edit": "Edit Request",
+  "usertype.permissions.request_delete": "Delete Request",
+  "usertype.permissions.request_lunch": "Lunch Request",
+  "error.packages.request.error.requests.user.delete_user_warn": "Warning about user's requests",
+  "error.packages.request.error.requests.user.delete_user_warn.message": "This user has a request or requests; If this user is deleted, all their requests will be deleted!",
+  "packages.request.error.requests.user.delete_user_warn.view_requests": "You can view the requests of this user using the link below.",
+  "packages.request.error.requests.user.delete_user_warn.view_requests.tell_someone": "If you want to see the requests of this user, ask the person who has this access!",
+  "packages.request.error.requests.user.delete_user_warn.view_requests_btn": "View user's requests"
+}

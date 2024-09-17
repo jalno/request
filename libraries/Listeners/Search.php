@@ -4,7 +4,6 @@ namespace packages\request\Listeners;
 
 use packages\base\DB;
 use packages\base\DB\Parenthesis;
-use packages\base\Translator;
 use packages\request\Authentication;
 use packages\request\Authorization;
 use packages\request\Process as Request;
@@ -66,12 +65,12 @@ class Search
         }
         $result = new Link();
         $result->setLink(userpanel\url('requests/view/'.$request->id));
-        $result->setTitle(Translator::trans('request.search.title', [
+        $result->setTitle(t('request.search.title', [
             'title' => $request->title,
         ]));
-        $result->setDescription(Translator::trans('request.search.description', [
+        $result->setDescription(t('request.search.description', [
             'user' => $request->user->getFullName(),
-            'status' => Translator::trans($statusTxt),
+            'status' => t($statusTxt),
         ]));
         SearchHandler::addResult($result);
     }

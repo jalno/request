@@ -12,11 +12,11 @@ $this->the_header();
 	<?php if (!empty($this->getProcessLists())) { ?>
 		<div class="panel panel-default">
 			<div class="panel-heading">
-				<i class="fa fa-exclamation-circle"></i> <?php echo Translator::trans('requests.processList'); ?>
+				<i class="fa fa-exclamation-circle"></i> <?php echo t('requests.processList'); ?>
 				<div class="panel-tools">
-					<a class="btn btn-xs btn-link tooltips" title="<?php echo Translator::trans('search'); ?>" href="#search" data-toggle="modal" data-original-title=""><i class="fa fa-search"></i></a>
+					<a class="btn btn-xs btn-link tooltips" title="<?php echo t('search'); ?>" href="#search" data-toggle="modal" data-original-title=""><i class="fa fa-search"></i></a>
 					<?php if ($this->canAdd) { ?>
-					<a class="btn btn-xs btn-link tooltips" title="<?php echo Translator::trans('request.process.add'); ?>" href="<?php echo userpanel\url('requests/new'); ?>"><i class="fa fa-plus"></i></a>
+					<a class="btn btn-xs btn-link tooltips" title="<?php echo t('request.process.add'); ?>" href="<?php echo userpanel\url('requests/new'); ?>"><i class="fa fa-plus"></i></a>
 					<?php } ?>
 					<a class="btn btn-xs btn-link panel-collapse collapses" href="#"></a>
 				</div>
@@ -30,16 +30,16 @@ $this->the_header();
 						<thead>
 							<tr>
 								<th class="center">#</th>
-								<th><?php echo Translator::trans('request.process.title'); ?></th>
+								<th><?php echo t('request.process.title'); ?></th>
 								<?php
 	            if ($this->multiuser) {
 	                ?>
-								<th><?php echo Translator::trans('request.process.client'); ?></th>
+								<th><?php echo t('request.process.client'); ?></th>
 								<?php
 	            }
 	    ?>
-								<th><?php echo Translator::trans('request.process.create_at'); ?></th>
-								<th><?php echo Translator::trans('request.process.status'); ?></th>
+								<th><?php echo t('request.process.create_at'); ?></th>
+								<th><?php echo t('request.process.status'); ?></th>
 								<?php if ($hasButtons) { ?><th></th><?php } ?>
 							</tr>
 						</thead>
@@ -82,7 +82,7 @@ $this->the_header();
                                     }
                                 ?>
 								<td class="ltr"><?php echo Date::format('Y/m/d H:i:s', $process->create_at); ?></td>
-								<td><span class="<?php echo $statusClass; ?>"><?php echo Translator::trans($statusTxt); ?></span></td>
+								<td><span class="<?php echo $statusClass; ?>"><?php echo t($statusTxt); ?></span></td>
 								<?php
                                 if ($hasButtons) {
                                     echo '<td class="center">'.$this->genButtons().'</td>';
@@ -101,7 +101,7 @@ $this->the_header();
 		<div class="modal fade" id="search" tabindex="-1" data-show="true" role="dialog">
 			<div class="modal-header">
 				<button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
-				<h4 class="modal-title"><?php echo Translator::trans('search'); ?></h4>
+				<h4 class="modal-title"><?php echo t('search'); ?></h4>
 			</div>
 			<div class="modal-body">
 				<form id="processSearch" class="form-horizontal" action="<?php echo userpanel\url('requests'); ?>" method="GET">
@@ -112,25 +112,25 @@ $this->the_header();
 	            'name' => 'id',
 	            'type' => 'number',
 	            'ltr' => true,
-	            'label' => Translator::trans('request.process.id'),
+	            'label' => t('request.process.id'),
 	        ],
 	        [
 	            'name' => 'title',
-	            'label' => Translator::trans('request.process.title'),
+	            'label' => t('request.process.title'),
 	        ],
 	        [
 	            'name' => 'status',
 	            'type' => 'select',
-	            'label' => Translator::trans('request.process.status'),
+	            'label' => t('request.process.status'),
 	            'options' => $this->getStatusListForSelect(),
 	        ],
 	        [
 	            'name' => 'word',
-	            'label' => Translator::trans('request.process.search.by.keyword'),
+	            'label' => t('request.process.search.by.keyword'),
 	        ],
 	        [
 	            'type' => 'select',
-	            'label' => Translator::trans('search.comparison'),
+	            'label' => t('search.comparison'),
 	            'name' => 'comparison',
 	            'options' => $this->getComparisonsForSelect(),
 	        ],
@@ -143,7 +143,7 @@ $this->the_header();
 	            ],
 	            [
 	                'name' => 'user_name',
-	                'label' => Translator::trans('request.process.client'),
+	                'label' => t('request.process.client'),
 	            ],
 	        ];
 	        array_splice($feilds, 2, 0, $userSearch);
@@ -155,8 +155,8 @@ $this->the_header();
 				</form>
 			</div>
 			<div class="modal-footer">
-				<button type="submit" form="processSearch" class="btn btn-success"><?php echo Translator::trans('search'); ?></button>
-				<button type="button" class="btn btn-default" data-dismiss="modal" aria-hidden="true"><?php echo Translator::trans('cancel'); ?></button>
+				<button type="submit" form="processSearch" class="btn btn-success"><?php echo t('search'); ?></button>
+				<button type="button" class="btn btn-default" data-dismiss="modal" aria-hidden="true"><?php echo t('cancel'); ?></button>
 			</div>
 		</div>
 	<?php } ?>

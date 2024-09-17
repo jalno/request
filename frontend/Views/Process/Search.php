@@ -25,8 +25,8 @@ class Search extends RequestList
     public function __beforeLoad()
     {
         $this->setTitle([
-            Translator::trans('requests'),
-            Translator::trans('requests.processList'),
+            t('requests'),
+            t('requests.processList'),
         ]);
         $this->check_multiuser();
         $this->setButtons();
@@ -45,7 +45,7 @@ class Search extends RequestList
             $error->setData([
                 [
                     'type' => 'btn-teal',
-                    'txt' => Translator::trans('ticketing.add'),
+                    'txt' => t('ticketing.add'),
                     'link' => userpanel\url('ticketing/new'),
                 ],
             ], 'btns');
@@ -61,22 +61,22 @@ class Search extends RequestList
     public function setButtons()
     {
         $this->setButton('view', $this->canView, [
-            'title' => Translator::trans('request.processView'),
+            'title' => t('request.processView'),
             'icon' => 'fa fa-bar-chart-o ',
             'classes' => ['btn', 'btn-xs', 'btn-success'],
         ]);
         $this->setButton('edit', $this->canEdit, [
-            'title' => Translator::trans('request.processEdit'),
+            'title' => t('request.processEdit'),
             'icon' => 'fa fa-edit',
             'classes' => ['btn', 'btn-xs', 'btn-teal'],
         ]);
         $this->setButton('delete', $this->canDel, [
-            'title' => Translator::trans('request.processDelete'),
+            'title' => t('request.processDelete'),
             'icon' => 'fa fa-times',
             'classes' => ['btn', 'btn-xs', 'btn-bricky'],
         ]);
         $this->setButton('lunch', $this->canLunch, [
-            'title' => Translator::trans('request.processLunch'),
+            'title' => t('request.processLunch'),
             'icon' => 'fa fa-undo',
             'classes' => ['btn', 'btn-xs', 'btn-info'],
         ]);
@@ -86,35 +86,35 @@ class Search extends RequestList
     {
         return [
             [
-                'title' => Translator::trans('choose'),
+                'title' => t('choose'),
                 'value' => '',
             ],
             [
-                'title' => Translator::trans('request.process.status.done'),
+                'title' => t('request.process.status.done'),
                 'value' => Process::done,
             ],
             [
-                'title' => Translator::trans('request.process.status.read'),
+                'title' => t('request.process.status.read'),
                 'value' => Process::read,
             ],
             [
-                'title' => Translator::trans('request.process.status.unread'),
+                'title' => t('request.process.status.unread'),
                 'value' => Process::unread,
             ],
             [
-                'title' => Translator::trans('request.process.status.disagreement'),
+                'title' => t('request.process.status.disagreement'),
                 'value' => Process::disagreement,
             ],
             [
-                'title' => Translator::trans('request.process.status.running'),
+                'title' => t('request.process.status.running'),
                 'value' => Process::running,
             ],
             [
-                'title' => Translator::trans('request.process.status.failed'),
+                'title' => t('request.process.status.failed'),
                 'value' => Process::failed,
             ],
             [
-                'title' => Translator::trans('request.process.status.cancel'),
+                'title' => t('request.process.status.cancel'),
                 'value' => Process::cancel,
             ],
         ];
@@ -125,7 +125,7 @@ class Search extends RequestList
         parent::onSourceLoad();
         if (parent::$navigation) {
             $item = new MenuItem('requests');
-            $item->setTitle(Translator::trans('requests'));
+            $item->setTitle(t('requests'));
             $item->setURL(userpanel\url('requests'));
             $item->setIcon('fa fa-exclamation-circle');
             Navigation::addItem($item);
@@ -136,15 +136,15 @@ class Search extends RequestList
     {
         return [
             [
-                'title' => Translator::trans('search.comparison.contains'),
+                'title' => t('search.comparison.contains'),
                 'value' => 'contains',
             ],
             [
-                'title' => Translator::trans('search.comparison.equals'),
+                'title' => t('search.comparison.equals'),
                 'value' => 'equals',
             ],
             [
-                'title' => Translator::trans('search.comparison.startswith'),
+                'title' => t('search.comparison.startswith'),
                 'value' => 'startswith',
             ],
         ];

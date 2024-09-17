@@ -18,8 +18,8 @@ class Lunch extends RequestLunch
     {
         $this->process = $this->getProcess();
         $this->setTitle([
-            Translator::trans('requests'),
-            Translator::trans('request.processLunch'),
+            t('requests'),
+            t('request.processLunch'),
         ]);
         Navigation::active('requests');
     }
