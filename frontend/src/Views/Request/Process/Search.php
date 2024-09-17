@@ -120,18 +120,6 @@ class Search extends RequestList
         ];
     }
 
-    public static function onSourceLoad()
-    {
-        parent::onSourceLoad();
-        if (parent::$navigation) {
-            $item = new MenuItem('requests');
-            $item->setTitle(t('requests'));
-            $item->setURL(userpanel\url('requests'));
-            $item->setIcon('fa fa-exclamation-circle');
-            Navigation::addItem($item);
-        }
-    }
-
     public function getComparisonsForSelect()
     {
         return [

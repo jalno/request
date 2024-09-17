@@ -13,8 +13,8 @@
             "packages\\request\\": [
                 "libraries/"
             ],
-            "themes\\clipone\\Views\\Request\\": [
-                "frontend/Views/"
+            "themes\\clipone\\": [
+                "frontend/src/"
             ]
         }
     },

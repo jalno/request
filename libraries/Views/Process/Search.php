@@ -14,7 +14,6 @@ class Search extends ListView
     protected $canEdit;
     protected $canDel;
     protected $canLunch;
-    protected static $navigation;
 
     public function __construct()
     {
@@ -28,10 +27,5 @@ class Search extends ListView
     public function getProcessLists()
     {
         return $this->dataList;
-    }
-
-    public static function onSourceLoad()
-    {
-        self::$navigation = Authorization::is_accessed('search');
     }
 }

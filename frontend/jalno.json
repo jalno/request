@@ -2,18 +2,17 @@
 	"name" : "clipone",
 	"title":"Clip One",
 	"version" : "1.0.0",
-	"author" : {
-		"name" : "Mahdi Abedi",
-		"website" : "http://www.mhdabedi.tk/"
-	},
-	"languages":{
-		"fa_IR" : "langs/fa_IR.json"
-	},
 	"assets":[
 		{"type":"package", "name":"jquery", "version": "^3.2.1"},
 		{"type":"package", "name":"jquery-ui", "version": "^1.12.1"},
 		{"type":"package", "name":"webuilder", "version": "1.1.3"},
 		{"type":"less", "file":"assets/less/not-box.less"},
 		{"type":"ts", "file":"assets/ts/Main.ts"}
+	],
+	"events": [
+		{
+			"name": "themes/clipone/Events/Navigation/Initial",
+			"listener": "themes/clipone/Listeners/Request/NavigationListener@initial"
+		}
 	]
 }
