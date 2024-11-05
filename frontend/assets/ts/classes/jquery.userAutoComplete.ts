@@ -1,8 +1,9 @@
 /// <reference path="jquery.userAutoComplete.d.ts"/>
 
 import $ from "jquery";
-import "jquery-ui/ui/widgets/autocomplete.js";
+import "jquery-ui/dist/jquery-ui.js";
 import {Router, webuilder} from "webuilder";
+
 interface user{
 	id:number;
 	name:string;
